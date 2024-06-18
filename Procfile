@@ -1,0 +1,1 @@
+web: gunicorn valhalla_project.wsgi
