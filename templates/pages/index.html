@@ -1,0 +1,71 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<!-- partial -->
+<div class="main-panel">
+    <div class="content-wrapper">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="home-tab">
+            <div class="tab-content tab-content-basic">
+              <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
+                
+                
+                <div class="col-lg-12 grid-margin stretch-card">
+                  <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Cars</h4>
+                        <div class="table-responsive">
+                          <table class="table table-striped">
+                            <thead>
+                              <tr>
+                                <th> Type </th>
+                                <th> Model </th>
+                                <th> Registration N° </th>
+                                <th> Status </th>
+                              </tr>
+                            </thead>
+                            
+                            <tbody>
+                              {% for car in cars %}
+                              <tr>
+                                <td> {{car.type}} </td>
+                                <td> {{car.model}} </td>
+                                <td> {{car.matricule}} </td>
+                                <td>
+                                  {% if car.status == 'available' %}
+                                  <label class="badge badge-success">{{car.status}}</label>
+                                  {% elif car.status == 'rented' %}
+                                  <label class="badge badge-info">{{car.status}}</label>
+                                  {% elif car.status == 'broke' %}
+                                  <label class="badge badge-warning">{{car.status}}</label>
+                                  {% elif car.status == 'unavailable' %}
+                                  <label class="badge badge-danger">{{car.status}}</label>
+                                  {% else %}
+                                  <label class="badge badge-dark">{{car.status}}</label>
+                                  {% endif %}
+                                </td>
+                              </tr>
+                              {% endfor %}
+                            </tbody>
+                            
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    <!-- content-wrapper ends -->
+
+
+
+
+{% endblock %}

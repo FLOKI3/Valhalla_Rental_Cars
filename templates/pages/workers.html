@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="main-panel">
+    <div class="content-wrapper">
+      <div class="row ">
+       
+        
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Workers Table</h4>
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th> Worker </th>
+                <th> Full name </th>
+                <th> Email </th>
+                <th> Phone N° </th>
+                <th> Driver License N° </th>
+                <th> CIN </th>
+                <th> Details </th>
+              </tr>
+            </thead>
+            
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td class="py-1">
+                        {% if user.avatar %}
+                            <img src="{{ user.avatar.url }}" alt="Profile" class="rounded-circle" width="50" height="50">
+                        {% else %}
+                            <img src="{% static 'images/faces/face28.png' %}" alt="Profile" class="rounded-circle" width="50" height="50">
+                        {% endif %}
+                    </td>
+                    <td>{{ user.first_name }} {{ user.last_name }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.phone_number }}</td>
+                    <td>{{ user.driver_license_number }}</td>
+                    <td>{{ user.CIN }}</td>
+                    <td>
+                        <a href="{% url "worker_view" user.id %}">
+                            <button type="button" class="btn btn-success btn-rounded btn-icon btn-sm">
+                                <i class="ti-eye"></i>
+                            </button>
+                        </a>
+                    </td>
+                    
+                </tr>
+                {% endfor %}
+            </tbody>
+            
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+
+
+
+{% endblock %}

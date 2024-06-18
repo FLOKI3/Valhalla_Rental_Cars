@@ -1,0 +1,271 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+    *{
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    font-family: 'Open Sans', sans-serif;
+    }
+    body{
+        line-height: 1.5;
+    }
+    
+    img{
+        width: 100%;
+        display: block;
+        height: 100%;
+        
+    }
+    .img-display{
+        overflow: hidden;
+        
+    }
+    .img-showcase{
+        display: flex;
+        width: 100%;
+        transition: all 0.5s ease;
+        
+    }
+    .img-showcase img{
+        min-width: 100%;
+        
+    }
+    .img-select{
+        display: flex;
+        
+    }
+    .img-item{
+        margin: 0.3rem;
+        
+    }
+    .img-item:nth-child(1),
+    .img-item:nth-child(2),
+    .img-item:nth-child(3){
+        margin-right: 0;
+    }
+    .img-item:hover{
+        opacity: 0.8;
+    }
+    .product-content{
+        padding: 2rem 1rem;
+    }
+    .product-title{
+        font-size: 3rem;
+        text-transform: capitalize;
+        font-weight: 700;
+        position: relative;
+        color: #12263a;
+        margin: 1rem 0;
+    }
+    .product-title::after{
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        height: 4px;
+        width: 80px;
+        background: #12263a;
+    }
+    .product-link{
+        text-decoration: none;
+        text-transform: uppercase;
+        font-weight: 400;
+        font-size: 0.9rem;
+        display: inline-block;
+        margin-bottom: 0.5rem;
+        background: #256eff;
+        color: #fff;
+        padding: 0 0.3rem;
+        transition: all 0.5s ease;
+    }
+    .product-link:hover{
+        opacity: 0.9;
+    }
+    .product-rating{
+        color: #ffc107;
+    }
+    .product-rating span{
+        font-weight: 600;
+        color: #252525;
+    }
+    .product-price{
+        margin: 1rem 0;
+        font-size: 1rem;
+        font-weight: 700;
+    }
+    .product-price span{
+        font-weight: 400;
+    }
+    .last-price span{
+        color: #f64749;
+        text-decoration: line-through;
+    }
+    .new-price span{
+        color: #256eff;
+    }
+    .product-detail h2{
+        text-transform: capitalize;
+        color: #12263a;
+        padding-bottom: 0.6rem;
+    }
+    .product-detail p{
+        font-size: 0.9rem;
+        padding: 0.3rem;
+        opacity: 0.8;
+    }
+    .product-detail ul{
+        margin: 1rem 0;
+        font-size: 0.9rem;
+    }
+    .product-detail ul li{
+        margin: 0;
+        list-style: none;
+        background: url(shoes_images/checked.png) left center no-repeat;
+        background-size: 18px;
+        padding-left: 1.7rem;
+        margin: 0.4rem 0;
+        font-weight: 600;
+        opacity: 0.9;
+    }
+    .product-detail ul li span{
+        font-weight: 400;
+    }
+    
+    
+
+    @media screen and (min-width: 992px){
+        .card{
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-gap: 1.5rem;
+        }
+        .card-wrapper{
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .product-imgs{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .product-content{
+            padding-top: 0;
+        }
+    }
+  </style>
+  <div class="main-panel">
+    <div class="content-wrapper">
+        <div class="row">
+    <div class = "card">
+      <!-- card left -->
+      <div class = "product-imgs">
+        <div class = "img-display">
+          <div class = "img-showcase">
+            {% if car.car_picture %}
+            <img src = "{{car.car_picture.url}}">
+            {% else %}
+            <img src = "{% static "images/cars-cards.png" %}">
+            {% endif %}
+            <!--
+            <img src = "https://francuskie.pl/wp-content/uploads/2022/10/dacia-duster-mat-edition-202290523-1666085786_1.jpg" alt = "shoe image">
+            <img src = "https://francuskie.pl/wp-content/uploads/2022/06/Dacia-Duster-tuningn-Carpoint.jpg" alt = "shoe image">
+            <img src = "https://dacia.press/wp-content/uploads/2023/06/Dacia-Duster-2023.jpeg" alt = "shoe image">
+          -->
+          </div>
+        </div>
+        <div class = "img-select">
+          <!--
+
+          <div class = "img-item">
+            <a href = "#" data-id = "1">
+              <img src = "" alt = "shoe image">
+            </a>
+          </div>
+          <div class = "img-item">
+            <a href = "#" data-id = "2">
+              <img src = "https://francuskie.pl/wp-content/uploads/2022/10/dacia-duster-mat-edition-202290523-1666085786_1.jpg" alt = "shoe image">
+            </a>
+          </div>
+          <div class = "img-item">
+            <a href = "#" data-id = "3">
+              <img src = "https://francuskie.pl/wp-content/uploads/2022/06/Dacia-Duster-tuningn-Carpoint.jpg" alt = "shoe image">
+            </a>
+          </div>
+          <div class = "img-item">
+            <a href = "#" data-id = "4">
+              <img src = "https://dacia.press/wp-content/uploads/2023/06/Dacia-Duster-2023.jpeg" alt = "shoe image">
+            </a>
+          </div>
+          -->
+        </div>
+      </div>
+      <!-- card right -->
+      <div class = "product-content">
+        <h2 class = "product-title">{{car.type}}</h2>
+        <a href = "#" class = "product-link">{{car.model}}</a>
+        
+
+        <div class = "product-price">
+          <p class = "new-price">Price: <span> {{car.price_day}} DH </span></p>
+        </div>
+
+        <div class = "product-detail">
+          <h2>Informations: </h2>
+          <ul>
+            <li>Model Year: <span>{{car.model_year}}</span></li>
+            <li>Registration N°: <span>{{car.matricule}}</span></li>
+            <li>Color: <span>{{car.color}}</span></li>
+            {% if car.status == 'available' %}
+            <li class="list-group-item">Status: <label class="badge badge-success">{{car.status}}</label></li>
+            {% elif car.status == 'rented' %}
+            <li class="list-group-item">Status: <label class="badge badge-info">{{car.status}}</label></li>
+            {% elif car.status == 'broke' %}
+            <li class="list-group-item">Status: <label class="badge badge-warning">{{car.status}}</label></li>
+            {% elif car.status == 'unavailable' %}
+            <li class="list-group-item">Status: <label class="badge badge-danger">{{car.status}}</label></li>
+            {% else %}
+            <li class="list-group-item">Status: <label class="badge badge-dark">{{car.status}}</label></li>
+            {% endif %}
+            <!-- Display Parking Information -->
+    {% if car.reservation_set.exists %}
+        {% for reservation in car.reservation_set.all %}
+        {% if reservation.parking %}
+        <li>Parking: {{ reservation.parking }}</li>
+        {% endif %}
+        {% endfor %}
+    
+        {% endif %}
+            <li>Car Power: <span>{{car.car_power}}</span></li>
+          </ul>
+        </div>
+        <h2>Problem Description: </h2>
+            <p>{{car.problems}}</p>
+        <h2>Problem Picture: </h2>
+        {% if car.problems_picture %}
+        <img style="width: auto; height: 100px; margin-bottom:30px;" src = "{{car.problems_picture.url}}" alt = "shoe image">
+        {% else %}
+        <p>None</p>
+        {% endif %}
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <a href="{% url "car_cards" %}" class="btn btn-light me-md-2" type="button">Back</a>
+        </div>
+
+        
+      </div>
+    </div>
+  </div>
+  </div>
+  </div>
+  </div>
+
+
+
+
+
+
+{% endblock %}

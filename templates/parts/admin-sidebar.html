@@ -1,0 +1,54 @@
+<!-- partial -->
+<div class="container-fluid page-body-wrapper">
+    <!-- partial:partials/_sidebar.html -->
+    <nav class="sidebar sidebar-offcanvas" id="sidebar">
+      <ul class="nav">
+        
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'stats' %}">
+            <i class="mdi mdi-grid-large menu-icon"></i>
+            <span class="menu-title">Dashboard</span>
+          </a>
+        </li>
+        <li class="nav-item nav-category">Workers</li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'car_cards' %}">
+            <i class="menu-icon mdi mdi-car-side"></i>
+            <span class="menu-title">Cars</span>
+          </a>
+          <li class="nav-item">
+          <a class="nav-link" href="{% url 'reservations' %}">
+            <i class="menu-icon mdi mdi-file-document"></i>
+            <span class="menu-title">Reservations</span>
+          </a>
+        </li>
+        </li>
+        <li class="nav-item nav-category">Admins</li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'cars' %}">
+            <i class="menu-icon mdi mdi-car"></i>
+            <span class="menu-title">Cars</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'clients' %}">
+            <i class="menu-icon mdi mdi-account-multiple-outline"></i>
+            <span class="menu-title">Clients</span>
+          </a>
+        </li>
+        
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'workers' %}">
+            <i class="menu-icon mdi mdi-briefcase"></i>
+            <span class="menu-title">Workers</span>
+          </a>
+        </li>
+        
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'history' %}">
+            <i class="menu-icon mdi mdi-history"></i>
+            <span class="menu-title">History</span>
+          </a>
+        </li>
+      </ul>
+    </nav>

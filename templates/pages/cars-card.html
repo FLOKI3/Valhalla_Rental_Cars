@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="main-panel">
+    <div class="content-wrapper">
+        <div class="row">
+            {% for car in cars %}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="position-relative">
+                        {% if car.car_picture %}
+                        <img src="{{ car.car_picture.url }}" class="card-img-top" alt="Car Image">
+                        {% else %}
+                        <img src="{% static "images/cars-cards.png" %}" class="card-img-top" alt="Car Image">
+                        {% endif %}
+                        
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ car.type }}</h5>
+                        <p class="card-text">{{ car.model }}</p>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><b> Registration N°: </b>{{ car.matricule }}</li>
+                            {% if car.status == 'available' %}
+                            <li class="list-group-item"><b> Status: </b><label class="badge badge-success">{{car.status}}</label></li>
+                            {% elif car.status == 'rented' %}
+                            <li class="list-group-item"><b> Status: </b><label class="badge badge-info">{{car.status}}</label></li>
+                            {% elif car.status == 'broke' %}
+                            <li class="list-group-item"><b> Status: </b><label class="badge badge-warning">{{car.status}}</label></li>
+                            {% elif car.status == 'unavailable' %}
+                            <li class="list-group-item"><b> Status: </b><label class="badge badge-danger">{{car.status}}</label></li>
+                            {% else %}
+                            <li class="list-group-item"><b> Status: </b><label class="badge badge-dark">{{car.status}}</label></li>
+                            {% endif %}
+                            
+                            <li class="list-group-item"><b> Model Year: </b>{{ car.model_year }}</li>
+                            <li class="list-group-item"><b> Price: </b>{{ car.price_day }} DH</li>
+
+                            
+                            
+                        
+                        </ul>
+                        <a href="{% url 'car_detail' id=car.id %}" class="btn btn-primary mt-3">View Details</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+</div>
+
+{% endblock %}

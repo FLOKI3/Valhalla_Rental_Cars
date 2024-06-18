@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+
+
+<div class="container mt-5">
+    <h1 class="mb-4">Search Results for "<strong>{{ query }}</strong>"</h1>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <h2 class="mb-0">Cars</h2>
+        </div>
+        <div class="card-body">
+            {% if cars %}
+                <ul class="list-group">
+                {% for car in cars %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <a href="{% url 'car_detail' car.id %}">{{ car.model }} ({{ car.matricule }})</a>
+                        <span class="badge bg-primary">{{ car.status }}</span>
+                    </li>
+                {% endfor %}
+                </ul>
+            {% else %}
+                <p class="text-muted">No cars found.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <h2 class="mb-0">Clients</h2>
+        </div>
+        <div class="card-body">
+            {% if clients and request.user.is_superuser %}
+                <ul class="list-group">
+                {% for client in clients %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <a href="{% url 'client_edit' client.id %}">{{ client.first_name }} {{ client.last_name }}</a>
+                        <span class="badge bg-success">{{ client.email }}</span>
+                    </li>
+                {% endfor %}
+                </ul>
+            {% else %}
+                <p class="text-muted">No clients found.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <h2 class="mb-0">Reservations</h2>
+        </div>
+        <div class="card-body">
+            {% if reservations %}
+                <ul class="list-group">
+                {% for reservation in reservations %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <a href="{% url 'reservation_edit' reservation.id %}">
+                            Reservation for {{ reservation.client.first_name }} {{ reservation.client.last_name }} - Car: {{ reservation.car.model }}
+                        </a>
+                        <span class="badge bg-warning">{{ reservation.start_date }} - {{ reservation.end_date }}</span>
+                    </li>
+                {% endfor %}
+                </ul>
+            {% else %}
+                <p class="text-muted">No reservations found.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock %}

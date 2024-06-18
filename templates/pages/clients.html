@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="main-panel">
+    <div class="content-wrapper">
+      <div class="row ">
+        {% if messages %}
+        <div class="alert-messages">
+        {% for message in messages %}
+          <div class="alert alert-primary {% if message.tags %}alert-{{ message.tags }}{% endif %}" role="alert">
+          {{ message }}
+          </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        <button type="button" class="btn btn-primary btn-icon-text" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo" style="margin-bottom: 10px;">
+            <i class="ti-plus btn-icon-prepend"></i> New Client 
+          </button>
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Create New Client</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <form method="POST" enctype="multipart/form-data">
+                      {% csrf_token %}
+                      {{form}}
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-success">Save</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Clients Table</h4>
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th> Client </th>
+                <th> Full name </th>
+                <th> Amount </th>
+                <th> CIN </th>
+                <th> Edit </th>
+                <th> Delete </th>
+              </tr>
+            </thead>
+            
+            <tbody>
+              {% for client in clients %}
+              <tr>
+                <td class="py-1">
+                  {% if client.client_picture %}
+                  <img src="{{client.client_picture.url}}" alt="Profile" />
+                  {% else %}
+                  <img src="{% static 'images/faces/face28.png' %}" alt="Profile" />
+                  {% endif %}
+                </td>
+                <td> {{client.first_name}} {{client.last_name}} </td>
+                
+                <td> {{ client.total_amount_spent }} DH </td>
+                <td> {{client.CIN}} </td>
+                <td>
+                    <a href="{% url "client_edit" client.id %}">
+                      <button type="button" class="btn btn-success btn-rounded btn-icon btn-sm">
+                        <i class="ti-pencil"></i>
+                      </button>
+                    </a>
+                  </td>
+                  <td>
+                    <a href="{% url "client_delete" client.id %}">
+                      <button type="button" class="btn btn-danger btn-rounded btn-icon btn-sm">
+                        <i class="ti-trash"></i>
+                      </button>
+                    </a>
+                  </td>
+
+              </tr>
+              {% endfor %}
+            </tbody>
+            
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+
+
+
+
+{% endblock %}

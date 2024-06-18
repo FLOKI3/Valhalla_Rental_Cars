@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="main-panel">
+    <div class="content-wrapper">
+<div class="container rounded bg-white mb-5">
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+    <div class="row">
+        <div class="col-md-3 border-right">
+            <div class="d-flex flex-column align-items-center text-center p-3 py-5">
+                {% if form.instance.client_picture %}
+                        <img id="profile_picture" class="rounded-circle mt-5" width="150px" src="{{ form.instance.client_picture.url }}">
+                    {% else %}
+                        <img id="profile_picture" class="rounded-circle mt-5" width="150px" src="{% static 'images/faces/face28.png' %}">
+                    {% endif %}
+                    <span id="full_name" class="font-weight-bold">{{ form.instance.first_name }} {{ form.instance.last_name }}</span>
+                    <span id="profile_email" class="text-black-50">{{ form.instance.email }}</span>
+                </div>
+        </div>
+        <div class="col-md-5 border-right">
+            <div class="p-3 py-5">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="text-right">Client Profile</h4>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-md-6"><label class="labels">First Name</label>{{form.first_name}}</div>
+                    <div class="col-md-6"><label class="labels">Last Name</label>{{form.last_name}}</div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-12"><label class="labels">CIN</label>{{form.CIN}}</div>
+                    <div class="col-md-12"><label class="labels">Birth Date</label>{{form.birth_date}}</div>
+                    <div class="col-md-12"><label class="labels">Driver License N°</label>{{form.driver_license_number}}</div>
+                    <div class="col-md-12"><label class="labels">Gender</label>{{form.gender}}</div>
+                    <div class="col-md-12"><label class="labels">Phone N°</label>{{form.phone_number}}</div>
+                    <div class="col-md-12"><label class="labels">Email</label>{{form.email}}</div>
+                    <div class="col-md-12"><label class="labels">Address</label>{{form.address}}</div>
+                    <div class="col-md-12"><label class="labels">Passport N°</label>{{form.passport_number}}</div>
+                    <div class="col-md-12"><label class="labels">Passport delivery</label>{{form.passport_delivery}}</div>
+                </div>
+                <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="submit">Save Profile</button></div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="p-3 py-5">
+                <div class="d-flex justify-content-between align-items-center experience"><span>Edit Profile</span></div><br>
+                <div class="col-md-12"><label class="labels">Client Profile</label>{{form.client_picture}}</div> <br>
+            </div>
+        </div>
+    </div>
+</form>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+
+
+{% endblock %}

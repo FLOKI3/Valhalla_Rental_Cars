@@ -1,0 +1,208 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="main-panel">
+    <div class="content-wrapper">
+      <div class="row">
+
+
+
+        <div class="col-sm-12">
+            <div class="home-tab">
+                <div class="d-sm-flex align-items-center justify-content-between">
+                    <div>
+                        <div class="btn-wrapper">
+                        <a href="#" class="btn btn-otline-dark"><i class="icon-printer"></i> Print</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="col-12 grid-margin">
+            <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">End Reservation</h4>
+                <form class="form-sample" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+
+
+
+                <div class="row">
+                    <div class="col-md-6">
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Car Status</label>
+                        <div class="col-sm-9">
+                        {{form.car_status}}
+                        </div>
+                    </div>
+                    </div>
+                    <div class="col-md-6">
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Reservation Status</label>
+                        <div class="col-sm-9">
+                        {{form.status}}
+                        </div>
+                    </div>
+                    </div>
+                    
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Worker</label>
+                        <div class="col-sm-9">
+                        {{form.worker}}
+                        </div>
+                    </div>
+                    </div>
+                    <div class="col-md-6">
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Fuel Gas</label>
+                        <div class="col-sm-9">
+                        {{form.fuel_gas}}
+                        </div>
+                    </div>
+                    </div>
+                    
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Recuperation Time</label>
+                        <div class="col-sm-9">
+                        {{form.recuperation_time}}
+                        </div>
+                    </div>
+                    </div>
+                    <div class="col-md-6">
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Recuperation Location</label>
+                        <div class="col-sm-9">
+                        {{form.recuperation_location}}
+                        </div>
+                    </div>
+                    </div>
+                    
+                </div>
+                <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Report</label>
+                        <div class="col-sm-9">
+                        {{form.report}}
+                        </div>
+                    </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Parking</label>
+                            <div class="col-sm-9">
+                            {{form.parking}}
+                            </div>
+                        </div>
+                        </div>
+                        
+                    </div>
+                    
+
+
+
+
+
+
+
+
+
+
+                <h4 class="card-title">Start Reservation</h4>
+                <div class="row">
+                    <div class="col-md-6">
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Car</label>
+                        <div class="col-sm-9">
+                        {{form.car}}
+                        </div>
+                    </div>
+                    </div>
+                    <div class="col-md-6">
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Client</label>
+                        <div class="col-sm-9">
+                        {{form.client}}
+                        </div>
+                    </div>
+                    </div>
+                    
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Start Date</label>
+                        <div class="col-sm-9">
+                        {{form.start_date}}
+                        </div>
+                    </div>
+                    </div>
+                    <div class="col-md-6">
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">End Date</label>
+                        <div class="col-sm-9">
+                        {{form.end_date}}
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Livraison Time</label>
+                        <div class="col-sm-9">
+                            {{form.livraison_time}}
+                        </div>
+                    </div>
+                    </div>
+                    <div class="col-md-6">
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Livraison Location</label>
+                        <div class="col-sm-9">
+                        {{form.livraison_location}}
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Fuel Gas</label>
+                        <div class="col-sm-9">
+                        {{form.fuel_gas}}
+                        </div>
+                    </div>
+                    </div>
+                    <div class="col-md-6">
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Money Guarantee</label>
+                        <div class="col-sm-9">
+                        {{form.money_guarantee}}
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <a href="{% url "cars" %}" class="btn btn-light me-md-2" type="button">Back</a>
+                    <button class="btn btn-success" type="submit">Save</button>
+                    
+                </div>
+                
+                </form>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
