@@ -1,1 +1,1 @@
-web: gunicorn valhalla_project.wsgi
+web: gunicorn valhalla_project.wsgi --log-file -
