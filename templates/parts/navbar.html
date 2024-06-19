@@ -69,23 +69,25 @@
         
           
           
-          <li class="nav-item dropdown d-none d-lg-block user-dropdown">
-            <a class="nav-link" id="UserDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false">
-              {% if user.worker.avatar %}
-              <img class="img-xs rounded-circle" src="{{ user.worker.avatar.url }}" alt="Profile image">
-              {% else %}
-              <img class="img-xs rounded-circle" src="{% static 'images/faces/face28.png' %}" alt="Profile image">
-              {% endif %}
-              <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
-              <div class="dropdown-header text-center">
-                <p class="mb-1 mt-1 fw-semibold">{{ user.username }}</p>
-                <p class="fw-light text-muted mb-0">{{ user.email }}</p>
-              </div>
-              
-              <a href="{% url 'logout' %}" class="dropdown-item"><i class="dropdown-item-icon mdi mdi-power text-primary me-2"></i>Sign Out</a>
-          </li>
+        <li class="nav-item dropdown user-dropdown">
+          <a class="nav-link" id="UserDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+            {% if user.worker.avatar %}
+            <img class="img-xs rounded-circle" src="{{ user.worker.avatar.url }}" alt="Profile image">
+            {% else %}
+            <img class="img-xs rounded-circle" src="{% static 'images/faces/face28.png' %}" alt="Profile image">
+            {% endif %}
+          </a>
+          <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
+            <div class="dropdown-header text-center">
+              <p class="mb-1 mt-1 fw-semibold">{{ user.username }}</p>
+              <p class="fw-light text-muted mb-0">{{ user.email }}</p>
+            </div>
+            <a href="{% url 'logout' %}" class="dropdown-item">
+              <i class="dropdown-item-icon mdi mdi-power text-primary me-2"></i>Sign Out
+            </a>
+          </div>
           {% endif %}
-        </ul>
+        </li>
         <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
           <span class="mdi mdi-menu"></span>
         </button>
