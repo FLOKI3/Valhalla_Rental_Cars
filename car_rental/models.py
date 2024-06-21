@@ -141,7 +141,7 @@ class Reservation(models.Model):
     livraison_location = models.CharField(max_length=50)
     livraison_time = models.TimeField(auto_now=False, auto_now_add=False)
     money_guarantee = models.IntegerField(null=True, blank=True)
-    fuel_gas = models.IntegerField(null=True, blank=True)
+    start_mileage = models.IntegerField(null=True, blank=True)
     parking = models.CharField(max_length=50, choices=parking_locations, null=True, blank=True)
     availability = models.BooleanField(default=True)
 
@@ -150,6 +150,7 @@ class Reservation(models.Model):
     worker = models.ForeignKey(Worker, on_delete=models.PROTECT, null=True, blank=True)
     recuperation_time = models.TimeField(auto_now=False, auto_now_add=False, null=True, blank=True)
     recuperation_location = models.CharField(max_length=50, null=True, blank=True)
+    end_mileage = models.IntegerField(null=True, blank=True)
     report = models.CharField(max_length=50, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
@@ -171,6 +172,8 @@ class Reservation(models.Model):
         total_cost = duration * self.car.price_day
         return total_cost
     
+
+   
 
     def __str__(self):
         return self.car.model
@@ -254,6 +257,7 @@ class Spend(models.Model):
     entry_amount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     entry_client = models.ForeignKey(Client, on_delete=models.PROTECT, null=True, blank=True, related_name='entry_spends')
     entry_worker = models.ForeignKey(Worker, on_delete=models.PROTECT, null=True, blank=True, related_name='entry_spends')
+    entry_car = models.ForeignKey(Car, on_delete=models.PROTECT, null=True, blank=True, related_name='entry_spends')
     entry_description = models.CharField(max_length=5000, null=True, blank=True)
     entry_mode = models.CharField(choices=payment_mode, max_length=50, null=True, blank=True)
     
@@ -263,6 +267,7 @@ class Spend(models.Model):
     expense_worker = models.ForeignKey(Worker, on_delete=models.PROTECT, null=True, blank=True, related_name='expense_spends')
     expense_description = models.CharField(max_length=5000, null=True, blank=True)
     expense_mode = models.CharField(choices=payment_mode, max_length=50, null=True, blank=True)
-
+    expense_car = models.ForeignKey(Car, on_delete=models.PROTECT, null=True, blank=True, related_name='expense_spends')
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
     

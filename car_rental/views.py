@@ -10,6 +10,7 @@ from django.contrib.auth import login, logout, authenticate
 from django.db.models import Sum, Q
 from datetime import datetime, date, timedelta
 from collections import defaultdict
+import json
 
 from car_rental.calculation import calculate_total_amount, calculate_final_amount
 
@@ -131,8 +132,11 @@ def car_cards(request):
 def car_detail(request, id):
     notifications = Notification.objects.filter(recipient=request.user).order_by('-created_at')
     unread_notifications = notifications.filter(is_read=False)
+    car = get_object_or_404(Car, id=id)
+    latest_reservation = Reservation.objects.filter(car=car).order_by('-end_date').first()
     context = {
-        'car': get_object_or_404(Car, id=id),
+        'latest_reservation': latest_reservation,
+        'car': car,
         'notifications': notifications,
         'unread_notifications': unread_notifications,        
     }
@@ -529,7 +533,7 @@ def spends_add(request):
 @permission_required('car_rental.can_view_cars', raise_exception=False)
 def spends(request):
     context = {
-        'spends': Spend.objects.all()
+        'spends': Spend.objects.all().order_by('-created_at')
     }
     return render(request, 'pages/spends.html', context)
 
@@ -567,9 +571,10 @@ def spends_edit(request, id):
 
 
 
-
-
-
+@login_required
+def calendar(request):
+    
+    return render(request, 'pages/calendar.html')
 
 
 

@@ -4,20 +4,128 @@
 <div class="main-panel">
     <div class="content-wrapper">
       <div class="row">
+
+
+
+        
+
+
+
         <div class="col-12 grid-margin">
             <div class="card">
             <div class="card-body">
-                <h4 class="card-title">Horizontal Two column</h4>
-                    <form class="form-sample" method="POST" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        <p class="card-description"> Personal info </p>
-                            {{form}}
-                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                <a href="{% url "cars" %}" class="btn btn-light me-md-2" type="button">Back</a>
-                                <button class="btn btn-success" type="submit">Save</button>
-                            </div>
-                    </form>
+                <h4 class="card-title">Car Edit</h4>
+                <form class="form-sample" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-6">
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Type</label>
+                        <div class="col-sm-9">
+                        {{form.type}}
+                        </div>
+                    </div>
+                    </div>
+                    <div class="col-md-6">
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Model</label>
+                        <div class="col-sm-9">
+                        {{form.model}}
+                        </div>
+                    </div>
+                    </div>
+                    
                 </div>
+                <div class="row">
+                    <div class="col-md-6">
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Model Year</label>
+                        <div class="col-sm-9">
+                        {{form.model_year}}
+                        </div>
+                    </div>
+                    </div>
+                    <div class="col-md-6">
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Registration N°</label>
+                        <div class="col-sm-9">
+                        {{form.matricule}}
+                        </div>
+                    </div>
+                    </div>
+                    
+                </div>
+                <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Car Picture</label>
+                        <div class="col-sm-9">
+                        {{form.car_picture}}
+                        </div>
+                    </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Price per Day</label>
+                            <div class="col-sm-9">
+                            {{form.price_day}}
+                            </div>
+                        </div>
+                        </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Status</label>
+                            <div class="col-sm-9">
+                            {{form.status}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Problems</label>
+                            <div class="col-sm-9">
+                            {{form.problems}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Problems Picture</label>
+                            <div class="col-sm-9">
+                            {{form.problems_picture}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Color</label>
+                            <div class="col-sm-9">
+                            {{form.color}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Car Power</label>
+                            <div class="col-sm-9">
+                            {{form.car_power}}
+                            </div>
+                        </div>
+                    </div>
+                    
+
+
+
+
+                    </div>
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <a href="{% url "cars" %}" class="btn btn-light me-md-2" type="button">Back</a>
+                    <button class="btn btn-success" type="submit">Save</button>
+                    
+                </div>
+                
+                </form>
+            </div>
             </div>
         </div>
     </div>

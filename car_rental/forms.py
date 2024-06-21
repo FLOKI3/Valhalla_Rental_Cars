@@ -120,7 +120,7 @@ class ReservationForm(forms.ModelForm):
             'livraison_location',
             'livraison_time',
             'money_guarantee',
-            'fuel_gas',
+            'start_mileage',
             'start_date',
             'end_date',
 
@@ -129,6 +129,7 @@ class ReservationForm(forms.ModelForm):
             'worker',
             'recuperation_time',
             'recuperation_location',
+            'end_mileage',
             'report',
             'parking',
         ]
@@ -147,7 +148,8 @@ class ReservationForm(forms.ModelForm):
             'livraison_location': forms.Textarea(attrs={'class':'form-control mt-3 mb-3'}),
             'livraison_time': forms.NumberInput(attrs={'class':'form-control mt-3 mb-3', 'type':'time'}),
             'money_guarantee': forms.NumberInput(attrs={'class':'form-control mt-3 mb-3'}),
-            'fuel_gas': forms.NumberInput(attrs={'class':'form-control mt-3 mb-3'}),
+            'start_mileage': forms.NumberInput(attrs={'class':'form-control mt-3 mb-3'}),
+            'end_mileage': forms.NumberInput(attrs={'class':'form-control mt-3 mb-3'}),
             'start_date': forms.NumberInput(attrs={'class':'form-control mt-3 mb-3', 'type':'date'}),
             'end_date': forms.NumberInput(attrs={'class':'form-control mt-3 mb-3', 'type':'date'}),
         }
@@ -197,6 +199,7 @@ class SpendForm(forms.ModelForm):
             'entry_worker',
             'entry_description',
             'entry_mode',
+            'entry_car',
             
             'expense_date',
             'expense_amount',
@@ -204,12 +207,14 @@ class SpendForm(forms.ModelForm):
             'expense_worker',
             'expense_description',
             'expense_mode',
+            'expense_car',
         }
         widgets = {
             'entry_date': forms.NumberInput(attrs={'class':'form-control', 'type':'date'}),
             'entry_amount': forms.NumberInput(attrs={'class':'form-control', 'type':'number'}),
             'entry_client': forms.Select(attrs={'class':'form-control'}),
             'entry_worker': forms.Select(attrs={'class':'form-control'}),
+            'entry_car': forms.Select(attrs={'class':'form-control'}),
             'entry_description': forms.Textarea(attrs={'class':'form-control'}),
             'entry_mode': forms.Select(attrs={'class':'form-control'}),
             
@@ -217,6 +222,7 @@ class SpendForm(forms.ModelForm):
             'expense_amount': forms.NumberInput(attrs={'class':'form-control', 'type':'number'}),
             'expense_client': forms.Select(attrs={'class':'form-control'}),
             'expense_worker': forms.Select(attrs={'class':'form-control'}),
+            'expense_car': forms.Select(attrs={'class':'form-control'}),
             'expense_description': forms.Textarea(attrs={'class':'form-control'}),
             'expense_mode': forms.Select(attrs={'class':'form-control'}),
         }
