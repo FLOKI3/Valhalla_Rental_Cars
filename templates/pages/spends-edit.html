@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+
+
+
+
+<div class="main-panel">
+    <div class="content-wrapper">
+      <div class="row">
+        <div class="col-md-6 grid-margin stretch-card">
+          <div class="card">
+            <div class="card-body">
+              <h4 class="card-title">Add an Entry  <i style="color: #00E80B;" class="mdi mdi-arrow-down-drop-circle"></i></h4>
+              
+              <form class="forms-sample" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                  <label for="exampleInputUsername1">Date</label>
+                  {{form.entry_date}}
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Amount</label>
+                  {{form.entry_amount}}
+                </div>
+                <div class="form-group row">
+                    <div class="col">
+                      <label>Clients</label>
+                      <div id="the-basics">
+                        {{form.entry_client}}
+                      </div>
+                    </div>
+                    <div class="col">
+                      <label>Workers</label>
+                      <div id="bloodhound">
+                        {{form.entry_worker}}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                  <label for="exampleInputConfirmPassword1">Payment Method</label>
+                  {{form.entry_mode}}
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputPassword1">Description</label>
+                  {{form.entry_description}}
+                </div>
+                
+                <button type="submit" class="btn btn-primary me-2">Submit</button>
+                <a href="{% url "spends" %}" class="btn btn-light">Cancel</a>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 grid-margin stretch-card">
+          <div class="card">
+            <div class="card-body">
+              <h4 class="card-title">Add an Expense  <i style="color: #E50000;" class="mdi mdi-arrow-up-drop-circle"></i></h4>
+              
+              <form class="forms-sample" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                  <label for="exampleInputUsername1">Date</label>
+                  {{form.expense_date}}
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Amount</label>
+                  {{form.expense_amount}}
+                </div>
+                <div class="form-group row">
+                    <div class="col">
+                      <label>Clients</label>
+                      <div id="the-basics">
+                        {{form.expense_client}}
+                      </div>
+                    </div>
+                    <div class="col">
+                      <label>Workers</label>
+                      <div id="bloodhound">
+                        {{form.expense_worker}}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                  <label for="exampleInputConfirmPassword1">Payment Method</label>
+                  {{form.expense_mode}}
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputPassword1">Description</label>
+                  {{form.expense_description}}
+                </div>
+                
+                <button type="submit" class="btn btn-primary me-2">Submit</button>
+                <a href="{% url "spends" %}" class="btn btn-light">Cancel</a>
+              </form>
+            </div>
+          </div>
+        </div>
+                
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock %}

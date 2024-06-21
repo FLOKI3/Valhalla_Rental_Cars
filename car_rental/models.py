@@ -241,3 +241,28 @@ class UserActionLog(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.action} - {self.timestamp}"
+    
+
+
+class Spend(models.Model):
+    payment_mode = [
+        ('cash','Cash'),
+        ('bank_check','Bank Check'),
+    ]
+
+    entry_date = models.DateField(auto_now=False, auto_now_add=False, null=True, blank=True)
+    entry_amount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    entry_client = models.ForeignKey(Client, on_delete=models.PROTECT, null=True, blank=True, related_name='entry_spends')
+    entry_worker = models.ForeignKey(Worker, on_delete=models.PROTECT, null=True, blank=True, related_name='entry_spends')
+    entry_description = models.CharField(max_length=5000, null=True, blank=True)
+    entry_mode = models.CharField(choices=payment_mode, max_length=50, null=True, blank=True)
+    
+    expense_date = models.DateField(auto_now=False, auto_now_add=False, null=True, blank=True)
+    expense_amount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    expense_client = models.ForeignKey(Client, on_delete=models.PROTECT, null=True, blank=True, related_name='expense_spends')
+    expense_worker = models.ForeignKey(Worker, on_delete=models.PROTECT, null=True, blank=True, related_name='expense_spends')
+    expense_description = models.CharField(max_length=5000, null=True, blank=True)
+    expense_mode = models.CharField(choices=payment_mode, max_length=50, null=True, blank=True)
+
+
+    

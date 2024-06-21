@@ -10,6 +10,7 @@ admin.site.register(Reservation)
 admin.site.register(Worker)
 admin.site.register(Notification)
 admin.site.register(UserActionLog)
+admin.site.register(Spend)
 
 
 

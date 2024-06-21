@@ -36,6 +36,11 @@ urlpatterns = [
     
     path('search/', views.search, name='search'),
 
+    path('spends-add/', views.spends_add, name='spends_add'),
+    path('spends', views.spends, name='spends'),
+    path('spend-delete/<int:id>', views.spends_delete, name='spends_delete'),
+    path('spend-edit/<int:id>', views.spends_edit, name='spends_edit'),
+
 
 
     

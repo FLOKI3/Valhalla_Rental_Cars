@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import *
-from .forms import CarForm, ClientForm, ReservationForm, WorkerForm
+from .forms import CarForm, ClientForm, ReservationForm, WorkerForm, SpendForm
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib import messages
@@ -11,7 +11,7 @@ from django.db.models import Sum, Q
 from datetime import datetime, date, timedelta
 from collections import defaultdict
 
-from car_rental.calculation import calculate_total_amount
+from car_rental.calculation import calculate_total_amount, calculate_final_amount
 
 # Create your views here.
 
@@ -438,6 +438,8 @@ def stats(request):
     yearly_labels, yearly_data = calculate_yearly_totals()
     notifications = Notification.objects.filter(recipient=request.user).order_by('-created_at')
     unread_notifications = notifications.filter(is_read=False)
+    spends = Spend.objects.all()
+    final_amount = calculate_final_amount(spends)
 
     context = {
         'cars': Car.objects.all(),
@@ -461,9 +463,9 @@ def stats(request):
         'monthly_data': monthly_data,
         'yearly_labels': yearly_labels,
         'yearly_data': yearly_data,
-        
         'notifications': notifications,
         'unread_notifications': unread_notifications,
+        'final_amount': final_amount,
     }
 
     return render(request, 'pages/stats.html', context)
@@ -508,11 +510,55 @@ def history(request):
 
 
 
+@login_required
+@permission_required('car_rental.can_view_cars', raise_exception=False)
+def spends_add(request):
+    if request.method == 'POST':
+        add_spend = SpendForm(request.POST)
+        if add_spend.is_valid():
+            add_spend.save()
+        return HttpResponseRedirect(reverse('spends'))
+    
+    context = {
+        'form': SpendForm()
+    }
+    return render(request, 'pages/spends-add.html', context)
 
 
+@login_required
+@permission_required('car_rental.can_view_cars', raise_exception=False)
+def spends(request):
+    context = {
+        'spends': Spend.objects.all()
+    }
+    return render(request, 'pages/spends.html', context)
 
+@login_required
+@permission_required('car_rental.can_view_cars', raise_exception=False)
+def spends_delete(request, id):
+    spends_delete = get_object_or_404(Spend, id=id)
+    if request.method == 'POST':
+        spends_delete.delete()
+        return redirect('/spends')
+        
+    return render(request, 'pages/spends-delete.html')
 
-
+@login_required
+@permission_required('car_rental.can_view_cars', raise_exception=False)
+def spends_edit(request, id):
+    spend_id = Spend.objects.get(id=id)
+    if request.method == 'POST':
+        add_spend = SpendForm(request.POST, instance=spend_id)
+        if add_spend.is_valid():
+            add_spend.save()
+        return HttpResponseRedirect(reverse('spends'))
+    else:
+        add_spend = SpendForm(instance=spend_id)
+    
+    context = {
+        'form': add_spend,
+    }
+    return render(request, 'pages/spends-edit.html', context)
 
 
 
@@ -562,4 +608,5 @@ def search(request):
         'reservations': reservations,
     }
     return render(request, 'pages/search-results.html', context)
+
 

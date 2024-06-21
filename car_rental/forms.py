@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from .models import Car, Client, Reservation, Worker
+from .models import Car, Client, Reservation, Worker, Spend
 from django.forms import modelformset_factory
 from django.contrib.auth.models import User
 
@@ -181,4 +181,42 @@ class WorkerForm(forms.ModelForm):
             'phone_number': forms.NumberInput(attrs={'class':'form-control mt-3 mb-3', 'type':'tel', 'placeholder':'+212'}),
             'email': forms.EmailInput(attrs={'class':'form-control mt-3 mb-3', 'type':'email'}),
             'address': forms.Textarea(attrs={'class':'form-control mt-3 mb-3'}),
+        }
+
+
+
+
+
+class SpendForm(forms.ModelForm):
+    class Meta:
+        model = Spend
+        fields = {
+            'entry_date',
+            'entry_amount',
+            'entry_client',
+            'entry_worker',
+            'entry_description',
+            'entry_mode',
+            
+            'expense_date',
+            'expense_amount',
+            'expense_client',
+            'expense_worker',
+            'expense_description',
+            'expense_mode',
+        }
+        widgets = {
+            'entry_date': forms.NumberInput(attrs={'class':'form-control', 'type':'date'}),
+            'entry_amount': forms.NumberInput(attrs={'class':'form-control', 'type':'number'}),
+            'entry_client': forms.Select(attrs={'class':'form-control'}),
+            'entry_worker': forms.Select(attrs={'class':'form-control'}),
+            'entry_description': forms.Textarea(attrs={'class':'form-control'}),
+            'entry_mode': forms.Select(attrs={'class':'form-control'}),
+            
+            'expense_date': forms.NumberInput(attrs={'class':'form-control', 'type':'date'}),
+            'expense_amount': forms.NumberInput(attrs={'class':'form-control', 'type':'number'}),
+            'expense_client': forms.Select(attrs={'class':'form-control'}),
+            'expense_worker': forms.Select(attrs={'class':'form-control'}),
+            'expense_description': forms.Textarea(attrs={'class':'form-control'}),
+            'expense_mode': forms.Select(attrs={'class':'form-control'}),
         }
