@@ -207,6 +207,10 @@ def client_edit(request, id):
     notifications = Notification.objects.filter(recipient=request.user).order_by('-created_at')
     unread_notifications = notifications.filter(is_read=False)
     client_id = Client.objects.get(id=id)
+    entry_spends = Spend.objects.filter(entry_client=client_id).order_by('-created_at')
+    expense_spends = Spend.objects.filter(expense_client=client_id).order_by('-created_at')
+    recent_spends = list(entry_spends) + list(expense_spends)
+    recent_spends.sort(key=lambda spend: spend.created_at, reverse=True)
     if request.method == 'POST':
         client_save = ClientForm(request.POST, request.FILES, instance=client_id)
         if client_save.is_valid():
@@ -226,6 +230,7 @@ def client_edit(request, id):
         'form': client_save,
         'notifications': notifications,
         'unread_notifications': unread_notifications,
+        'recent_spends': recent_spends,
     }
     return render(request, 'pages/client-edit.html', context)
 @login_required
@@ -480,6 +485,10 @@ def worker_view(request, id):
     notifications = Notification.objects.filter(recipient=request.user).order_by('-created_at')
     unread_notifications = notifications.filter(is_read=False)
     worker_id = Worker.objects.get(id=id)
+    entry_spends = Spend.objects.filter(entry_worker=worker_id).order_by('-created_at')
+    expense_spends = Spend.objects.filter(expense_worker=worker_id).order_by('-created_at')
+    recent_spends = list(entry_spends) + list(expense_spends)
+    recent_spends.sort(key=lambda spend: spend.created_at, reverse=True)
     if request.method == 'post':
         worker_save = WorkerForm(request.POST, request.FILES, instance=worker_id)
         if worker_save.is_valid():
@@ -492,6 +501,7 @@ def worker_view(request, id):
         'form': worker_save,
         'notifications': notifications,
         'unread_notifications': unread_notifications,
+        'recent_spends': recent_spends,
     }
 
     return render(request, 'pages/worker-view.html', context)

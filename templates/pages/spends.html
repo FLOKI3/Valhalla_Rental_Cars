@@ -9,7 +9,7 @@
 <div class="main-panel">
     <div class="content-wrapper">
         <a href="{% url "spends_add" %}" type="button" class="btn btn-primary btn-icon-text" style="margin-bottom: 10px;">
-            <i class="ti-plus btn-icon-prepend"></i> New Car 
+            <i class="ti-plus btn-icon-prepend"></i> New Spend 
         </a>
       <div class="row">
         
@@ -30,7 +30,6 @@
                         <th>Amount</th>
                         <th>Client</th>
                         <th>Worker</th>
-                        <th>Car</th>
                         <th>Payment Method</th>
                         <th>Description</th>
                         <th>Edit</th>
@@ -70,13 +69,7 @@
                         <td></td>
                         {% endif %}
 
-                        {% if spend.entry_car %}
-                        <td>{{spend.entry_car}}</td>
-                        {% elif spend.expense_car %}
-                        <td>{{spend.expense_car}}</td>
-                        {% else %}
-                        <td></td>
-                        {% endif %}
+                        
                         
                         {% if spend.entry_mode %}
                         <td>{{spend.entry_mode}}</td>
