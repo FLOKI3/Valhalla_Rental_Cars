@@ -10,7 +10,6 @@ urlpatterns = [
     path('car-detail/<int:id>', views.car_detail, name='car_detail'),
     path('car-delete/<int:id>', views.car_delete, name='car_delete'),
     path('car-edit/<int:id>', views.car_edit, name='car_edit'),
-    path('calendar', views.calendar, name='calendar'),
     # Clients
     path('clients', views.clients, name='clients'),
     path('client-profile-delete', views.client_profile_delete, name='client_profile_delete'),
@@ -45,18 +44,10 @@ urlpatterns = [
 
 
     
-    
-    
-    
-    
-    
 
     
-    
-    
-    
-    
-
+    path('add-all-reservations-to-calendar/', views.add_all_reservations_to_calendar, name='add_all_reservations_to_calendar'),
+    path('oauth2callback/', views.google_oauth_callback, name='google_oauth_callback'),
     
 
     
