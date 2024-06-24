@@ -68,6 +68,35 @@
             {% endif %}
         </div>
     </div>
+    
+    
+    
+    
+    <div class="card mb-4">
+        <div class="card-header">
+            <h2 class="mb-0">Spends</h2>
+        </div>
+        <div class="card-body">
+            {% if spends %}
+                <ul class="list-group">
+                {% for spend in spends %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <a href="{% url 'spends_edit' spend.id %}">
+                            spend for {{ spend.entry_date }} {{ spend.expense_date }}
+                        </a>
+                    </li>
+                {% endfor %}
+                </ul>
+            {% else %}
+                <p class="text-muted">No spends found.</p>
+            {% endif %}
+        </div>
+    </div>
+    
+    
+    
+    
+    
 </div>
 </div>
 </div>

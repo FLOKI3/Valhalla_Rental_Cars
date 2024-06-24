@@ -200,6 +200,11 @@ def clients(request):
             )
 
             return HttpResponseRedirect('/clients')
+        
+
+
+
+
     context = {
         'clients': Client.objects.all().order_by('-created_at'),
         'form': ClientForm(),
@@ -538,6 +543,12 @@ def spends_add(request):
         add_spend = SpendForm(request.POST)
         if add_spend.is_valid():
             add_spend.save()
+            # Log the action
+            UserActionLog.objects.create(
+                user=request.user,
+                action='add',
+                description=f"Added Spend"
+            )
         return HttpResponseRedirect(reverse('spends'))
     
     context = {
@@ -560,6 +571,12 @@ def spends_delete(request, id):
     spends_delete = get_object_or_404(Spend, id=id)
     if request.method == 'POST':
         spends_delete.delete()
+        # Log the action
+        UserActionLog.objects.create(
+            user=request.user,
+            action='Delete',
+            description=f"Delete Spend"
+        )
         return redirect('/spends')
         
     return render(request, 'pages/spends-delete.html')
@@ -572,6 +589,12 @@ def spends_edit(request, id):
         add_spend = SpendForm(request.POST, instance=spend_id)
         if add_spend.is_valid():
             add_spend.save()
+            # Log the action
+            UserActionLog.objects.create(
+                user=request.user,
+                action='Update',
+                description=f"Update Spend"
+            )
         return HttpResponseRedirect(reverse('spends'))
     else:
         add_spend = SpendForm(instance=spend_id)
@@ -621,16 +644,19 @@ def search(request):
             Q(client__first_name__icontains=query) | Q(client__last_name__icontains=query) |
             Q(car__model__icontains=query) | Q(car__matricule__icontains=query)
         )
+        spends = Spend.objects.filter(Q(entry_date__icontains=query) | Q(expense_date__icontains=query))
     else:
         cars = Car.objects.none()
         clients = Client.objects.none()
         reservations = Reservation.objects.none()
+        spends = Spend.objects.none()
 
     context = {
         'query': query,
         'cars': cars,
         'clients': clients,
         'reservations': reservations,
+        'spends': spends,
     }
     return render(request, 'pages/search-results.html', context)
 
@@ -737,6 +763,12 @@ def create_invoices(request):
         form = InvoiceForm(request.POST)
         if form.is_valid():
             invoice = form.save()
+            # Log the action
+            UserActionLog.objects.create(
+                user=request.user,
+                action='Create',
+                description=f"Create Custom Invoice"
+            )
             return redirect('printinvoice', invoice_id=invoice.id)
     else:
         form = InvoiceForm()
@@ -782,8 +814,9 @@ def cars_maintenance(request):
         add_maintenance = MaintenanceForm(request.POST)
         if add_maintenance.is_valid():
             add_maintenance.save()
+            
     form = MaintenanceForm()
-    maintenances = Maintenance.objects.all()
+    maintenances = Maintenance.objects.all().order_by('-created_at')
     for maintenance in maintenances:
         latest_reservation = Reservation.objects.filter(car=maintenance.car).order_by('-end_date').first()
         if latest_reservation:
@@ -791,6 +824,12 @@ def cars_maintenance(request):
         else:
             maintenance.end_mileage = 0  # or some default value if there's no reservation
         
+            # Log the add action
+            UserActionLog.objects.create(
+                user=request.user,
+                action='add',
+                description=f"Added Maintenance for: {maintenance.car}"
+            )
     context = {
         'form': form,
         'maintenance': maintenances,
@@ -801,6 +840,12 @@ def maintenance_delete(request, id):
     maintenance_delete = get_object_or_404(Maintenance, id=id)
     if request.method == 'POST':
         maintenance_delete.delete()
+        # Log the add action
+        UserActionLog.objects.create(
+            user=request.user,
+            action='Delete',
+            description=f"Delete {maintenance_delete.car} Maintenance"
+        )
 
 
         return redirect('/maintenance')
@@ -813,6 +858,12 @@ def maintenance_edit(request, id):
         maintenance_save = MaintenanceForm(request.POST, instance=maintenance_id)
         if maintenance_save.is_valid():
             maintenance_save.save()
+            # Log the add action
+            UserActionLog.objects.create(
+            user=request.user,
+            action='Update',
+            description=f"Update Maintenance for: {maintenance_id.car} "
+        )
             return HttpResponseRedirect(reverse('cars_maintenance'))
             
     else:

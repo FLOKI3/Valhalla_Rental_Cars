@@ -316,6 +316,7 @@ class Maintenance(models.Model):
     insurance_end = models.DateField(auto_now=False, auto_now_add=False)
     technical_visit = models.DateField(auto_now=False, auto_now_add=False, blank=True, null=True)
     oil_change = models.IntegerField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
     
 
