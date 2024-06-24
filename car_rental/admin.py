@@ -11,6 +11,8 @@ admin.site.register(Worker)
 admin.site.register(Notification)
 admin.site.register(UserActionLog)
 admin.site.register(Spend)
+admin.site.register(Invoice)
+admin.site.register(Maintenance)
 
 
 

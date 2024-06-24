@@ -10,6 +10,9 @@ urlpatterns = [
     path('car-detail/<int:id>', views.car_detail, name='car_detail'),
     path('car-delete/<int:id>', views.car_delete, name='car_delete'),
     path('car-edit/<int:id>', views.car_edit, name='car_edit'),
+    path('maintenance', views.cars_maintenance, name='cars_maintenance'),
+    path('maintenance-delete/<int:id>', views.maintenance_delete, name='maintenance_delete'),
+    path('maintenance-edit/<int:id>', views.maintenance_edit, name='maintenance_edit'),
     # Clients
     path('clients', views.clients, name='clients'),
     path('client-profile-delete', views.client_profile_delete, name='client_profile_delete'),
@@ -49,6 +52,12 @@ urlpatterns = [
     path('add-all-reservations-to-calendar/', views.add_all_reservations_to_calendar, name='add_all_reservations_to_calendar'),
     path('oauth2callback/', views.google_oauth_callback, name='google_oauth_callback'),
     
+
+    path('invoice/<int:reservation_id>', views.invoice_view, name='invoice'),
+
+    path('create_invoices/', views.create_invoices, name='create_invoices'),
+    path('print-invoice/<int:invoice_id>/', views.print_invoice, name='printinvoice'),
+    path('invoice/print/<int:invoice_id>/', views.pdf_invoice, name='pdfinvoice'),
 
     
 ]

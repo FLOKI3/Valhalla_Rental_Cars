@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from .models import Car, Client, Reservation, Worker, Spend
+from .models import Car, Client, Reservation, Worker, Spend, Invoice, Maintenance
 from django.forms import modelformset_factory
 from django.contrib.auth.models import User
 
@@ -42,25 +42,9 @@ class CarForm(forms.ModelForm):
             'car_power': forms.NumberInput(attrs={'class':'form-control mt-3 mb-3'}),
         }
 
+
+
         
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -226,3 +210,78 @@ class SpendForm(forms.ModelForm):
             'expense_description': forms.Textarea(attrs={'class':'form-control'}),
             'expense_mode': forms.Select(attrs={'class':'form-control'}),
         }
+
+
+
+
+
+
+
+
+
+
+class InvoiceForm(forms.ModelForm):
+    class Meta:
+        model = Invoice
+        fields = [
+            'invoice_id',
+            'payment_date',
+            'client',
+            'car',
+            'start_date',
+            'end_date',
+            'discount',
+        ]
+        widgets = {
+            'invoice_id': forms.NumberInput(attrs={'class':'form-control', 'type':'number'}),
+            'payment_date': forms.NumberInput(attrs={'class':'form-control', 'type':'date'}),
+            'client': forms.Select(attrs={'class':'form-control'}),
+            'car': forms.Select(attrs={'class':'form-control'}),
+            'start_date': forms.NumberInput(attrs={'class':'form-control', 'type':'date'}),
+            'end_date': forms.NumberInput(attrs={'class':'form-control', 'type':'date'}),
+            'discount': forms.NumberInput(attrs={'class':'form-control', 'type':'number'}),
+        }
+
+
+
+
+
+class MaintenanceForm(forms.ModelForm):
+    class Meta:
+        model = Maintenance
+        fields = [
+            'car',
+            'insurance_start',
+            'insurance_end',
+            'technical_visit',
+            'oil_change',
+        ]
+        widgets = {
+            'car': forms.Select(attrs={'class':'form-control mt-3 mb-3'}),
+            'insurance_start': forms.NumberInput(attrs={'class':'form-control mt-3 mb-3', 'type':'date'}),
+            'insurance_end': forms.NumberInput(attrs={'class':'form-control mt-3 mb-3', 'type':'date'}),
+            'technical_visit': forms.NumberInput(attrs={'class':'form-control mt-3 mb-3', 'type':'date'}),
+            'oil_change': forms.NumberInput(attrs={'class':'form-control mt-3 mb-3', 'type':'number', 'placeholder':'Mileage'}),
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        

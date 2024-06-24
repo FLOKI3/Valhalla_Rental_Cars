@@ -41,7 +41,7 @@ class Car(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
     def __str__(self):
-        return self.model
+        return f'{self.model} ({self.matricule})'
     
 
 
@@ -271,3 +271,61 @@ class Spend(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
     
+
+class Invoice(models.Model):
+    invoice_id = models.CharField(max_length=500)
+    payment_date = models.DateField(auto_now=False, auto_now_add=False)
+    client = models.ForeignKey(Client, on_delete=models.CASCADE)
+        
+    car = models.ForeignKey(Car, on_delete=models.CASCADE)
+
+    start_date = models.DateField(auto_now=False, auto_now_add=False)
+    end_date = models.DateField(auto_now=False, auto_now_add=False)
+    discount = models.DecimalField(max_digits=10, decimal_places=2)
+
+
+    def total_days(self):
+        if self.start_date and self.end_date:
+            return (self.end_date - self.start_date).days
+        return 0
+
+    def total_amount(self):
+        return self.total_days() * self.car.price_day if self.start_date and self.end_date else Decimal('0.00')
+
+
+    def calculate_total_cost(self):
+        # Calculate the number of days rented, ensuring start and end date count correctly
+        duration = (self.end_date - self.start_date).days
+        if duration == 0:  # Same day rental
+            duration = 1
+        total_cost = duration * self.car.price_day
+        return total_cost
+
+
+    def __str__(self):
+        return self.invoice_id
+    
+
+
+
+
+
+class Maintenance(models.Model):
+    car = models.OneToOneField(Car, on_delete=models.CASCADE)
+    insurance_start = models.DateField(auto_now=False, auto_now_add=False)
+    insurance_end = models.DateField(auto_now=False, auto_now_add=False)
+    technical_visit = models.DateField(auto_now=False, auto_now_add=False, blank=True, null=True)
+    oil_change = models.IntegerField(blank=True, null=True)
+
+    
+
+    def get_status(self):
+        today = date.today()
+        if self.insurance_end < today or (self.technical_visit and self.technical_visit < today):
+            return 'danger'
+        return 'success'
+    
+    
+
+    def __str__(self):
+        return f'{self.car}'

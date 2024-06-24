@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import *
-from .forms import CarForm, ClientForm, ReservationForm, WorkerForm, SpendForm
+from .forms import CarForm, ClientForm, ReservationForm, WorkerForm, SpendForm, InvoiceForm, MaintenanceForm
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib import messages
@@ -359,6 +359,7 @@ def reservation_edit(request, id):
     else:
         reservation_save = ReservationForm(instance=reservation_id)
     context = {
+        'reservation': reservation_id,
         'reservations': Reservation.objects.all(),
         'form': reservation_save,
         'notifications': notifications,
@@ -589,8 +590,15 @@ def spends_edit(request, id):
 
 
 
+def invoice_view(request, reservation_id):
+    reservation = get_object_or_404(Reservation, id=reservation_id)
+    context = {
+        'reservation': reservation,
+    }
+    return render(request, 'pages/invoice.html', context)
 
-
+def invoices(request):
+    return render(request, 'pages/invoices.html')
 
 
 
@@ -693,3 +701,124 @@ def add_all_reservations_to_calendar(request):
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def create_invoices(request):
+    if request.method == 'POST':
+        form = InvoiceForm(request.POST)
+        if form.is_valid():
+            invoice = form.save()
+            return redirect('printinvoice', invoice_id=invoice.id)
+    else:
+        form = InvoiceForm()
+    return render(request, 'pages/create-invoices.html', {'form': form})
+
+def print_invoice(request, invoice_id):
+    invoice = get_object_or_404(Invoice, id=invoice_id)
+    total_amount = invoice.total_amount()
+    total_after_discount = total_amount - invoice.discount
+
+    return render(request, 'pages/print-invoice.html', {'invoice': invoice, 'total_after_discount': total_after_discount})
+
+def pdf_invoice(request, invoice_id):
+    invoice = get_object_or_404(Invoice, id=invoice_id)
+    total_amount = invoice.total_amount()  # Call the method
+    total_after_discount = total_amount - invoice.discount
+    return render(request, 'pages/pdf-invoice.html', {'invoice': invoice, 'total_after_discount': total_after_discount})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def cars_maintenance(request):
+    if request.method =='POST':
+        add_maintenance = MaintenanceForm(request.POST)
+        if add_maintenance.is_valid():
+            add_maintenance.save()
+    form = MaintenanceForm()
+    maintenances = Maintenance.objects.all()
+    for maintenance in maintenances:
+        latest_reservation = Reservation.objects.filter(car=maintenance.car).order_by('-end_date').first()
+        if latest_reservation:
+            maintenance.end_mileage = latest_reservation.end_mileage
+        else:
+            maintenance.end_mileage = 0  # or some default value if there's no reservation
+        
+    context = {
+        'form': form,
+        'maintenance': maintenances,
+    }
+    return render(request, 'pages/cars-maintenance.html', context)
+
+def maintenance_delete(request, id):
+    maintenance_delete = get_object_or_404(Maintenance, id=id)
+    if request.method == 'POST':
+        maintenance_delete.delete()
+
+
+        return redirect('/maintenance')
+    
+    return render(request, 'pages/maintenance-delete.html')
+
+def maintenance_edit(request, id):
+    maintenance_id = Maintenance.objects.get(id=id)
+    if request.method == 'POST':
+        maintenance_save = MaintenanceForm(request.POST, instance=maintenance_id)
+        if maintenance_save.is_valid():
+            maintenance_save.save()
+            return HttpResponseRedirect(reverse('cars_maintenance'))
+            
+    else:
+        maintenance_save = MaintenanceForm(instance=maintenance_id)
+
+    context = {
+        'form': maintenance_save,
+    }
+    return render(request, 'pages/maintenance-edit.html', context)

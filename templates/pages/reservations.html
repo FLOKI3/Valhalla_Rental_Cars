@@ -97,7 +97,7 @@
                   <tbody>
                     {% for reservation in reservations %}
                     <tr>
-                      <td> {{reservation.car}} </td>
+                      <td> {{reservation.car.model}} </td>
                       <td> {{reservation.car.matricule}} </td>
                       <td> {{reservation.client}} </td>
                       <td> {{reservation.total_days}} </td>

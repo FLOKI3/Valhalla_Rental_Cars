@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="main-panel">
+    <div class="content-wrapper">
+      <div class="row">
+
+
+
+        
+
+
+
+        <div class="col-12 grid-margin">
+            <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Maintenance Edit</h4>
+                <form class="form-sample" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-6">
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">car</label>
+                        <div class="col-sm-9">
+                        {{form.car}}
+                        </div>
+                    </div>
+                    </div>
+                    <div class="col-md-6">
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Insurance Start</label>
+                        <div class="col-sm-9">
+                        {{form.insurance_start}}
+                        </div>
+                    </div>
+                    </div>
+                    
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Insurance End</label>
+                        <div class="col-sm-9">
+                        {{form.insurance_end}}
+                        </div>
+                    </div>
+                    </div>
+                    <div class="col-md-6">
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Technical Visit</label>
+                        <div class="col-sm-9">
+                        {{form.technical_visit}}
+                        </div>
+                    </div>
+                    </div>
+                    
+                </div>
+                <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Oil Change</label>
+                        <div class="col-sm-9">
+                        {{form.oil_change}}
+                        </div>
+                    </div>
+                    </div>
+                    
+                    
+
+
+
+
+                    </div>
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <a href="{% url "cars_maintenance" %}" class="btn btn-light me-md-2" type="button">Back</a>
+                    <button class="btn btn-success" type="submit">Save</button>
+                    
+                </div>
+                
+                </form>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

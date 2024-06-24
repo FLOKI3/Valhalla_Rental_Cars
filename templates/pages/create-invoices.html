@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+
+
+
+
+
+
+<div class="main-panel">
+    <div class="content-wrapper">
+      <div class="row">
+
+
+
+        
+
+
+
+        <div class="col-12 grid-margin">
+            <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Create Invoice</h4>
+                <form class="form-sample" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-6">
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">ID</label>
+                        <div class="col-sm-9">
+                        {{form.invoice_id}}
+                        </div>
+                    </div>
+                    </div>
+                    <div class="col-md-6">
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Payment Date</label>
+                        <div class="col-sm-9">
+                        {{form.payment_date}}
+                        </div>
+                    </div>
+                    </div>
+                    
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Client</label>
+                        <div class="col-sm-9">
+                        {{form.client}}
+                        </div>
+                    </div>
+                    </div>
+                    <div class="col-md-6">
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Car</label>
+                        <div class="col-sm-9">
+                        {{form.car}}
+                        </div>
+                    </div>
+                    </div>
+                    
+                </div>
+                <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Start Date</label>
+                        <div class="col-sm-9">
+                        {{form.start_date}}
+                        </div>
+                    </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">End Date</label>
+                            <div class="col-sm-9">
+                            {{form.end_date}}
+                            </div>
+                        </div>
+                        </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Discount</label>
+                            <div class="col-sm-9">
+                            {{form.discount}}
+                            </div>
+                        </div>
+                    </div>
+                    
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <button type="submit" class="btn btn-primary btn-icon-text" style="margin-bottom: 10px;">
+                        <i class="ti-printer btn-icon-prepend"></i> Print 
+                    </button>
+                    
+                </div>
+                
+                </form>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+{% endblock %}

@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- partial -->
+<div class="main-panel">
+  <div class="content-wrapper">
+    <div class="row">
+      <div class="d-grid gap-2 d-md-flex justify-content-between mb-2">
+        <button type="button" class="btn btn-primary btn-icon-text mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">
+          <i class="ti-plus btn-icon-prepend"></i> Create Maintenance 
+        </button>
+      </div>
+
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">Maintenance</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="mb-3">
+                  <label for="exampleInputCar">Car</label>
+                  {{form.car}}
+                </div>
+                <div class="mb-3">
+                  <label for="exampleInputClient">Insurance Start</label>
+                  {{form.insurance_start}}
+                </div>
+                <div class="mb-3">
+                  <label for="exampleInputLivraisonLocation">Insurance End</label>
+                  {{form.insurance_end}}
+                </div>
+                <div class="mb-3">
+                  <label for="exampleInputLivraisonTime">Technical Visit</label>
+                  {{form.technical_visit}}
+                </div>
+                <div class="mb-3">
+                  <label for="exampleInputMoneyGuarantee">Oil Change</label>
+                  {{form.oil_change}}
+                </div>
+                
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-success">Save</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    
+
+        
+        <div class="col-lg-12 grid-margin stretch-card">
+          
+          <div class="card">
+            
+            <div class="card-body">
+              <h4 class="card-title">Maintenance Table</h4>
+              </p>
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th> Car </th>
+                      <th> Insurance End </th>
+                      <th> Technical Visit End </th>
+                      <th> Oil Change </th>
+                      <th> Car Mileage </th>
+                      <th> Status </th>
+                      <th> Edit </th>
+                      <th> Delete </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for maintenance in maintenance %}
+                    <tr>
+                      <td> {{maintenance.car}} </td>
+                      <td> {{maintenance.insurance_end}} </td>
+                      <td> {{maintenance.technical_visit}} </td>
+                      <td> {{maintenance.oil_change}} KM</td>
+                      <td> {{maintenance.end_mileage}} KM</td>
+                      {% if maintenance.get_status == 'success' and maintenance.end_mileage < maintenance.oil_change %}
+                      <td> <img src="{% static "images/success-icon.svg" %}"> </td>
+                      {% else %}
+                      <td> <img src="{% static "images/danger-icon.png" %}"> </td>
+                      {% endif %}
+                      <td>
+                    
+                        <a href="{% url "maintenance_edit" maintenance.id %}">
+                          <button type="button" class="btn btn-success btn-rounded btn-icon btn-sm">
+                            <i class="ti-pencil"></i>
+                          </button>
+                        </a>
+                      </td>
+                      <td>
+                        <a href="{% url "maintenance_delete" maintenance.id %}">
+                          <button type="button" class="btn btn-danger btn-rounded btn-icon btn-sm">
+                            <i class="ti-trash"></i>
+                          </button>
+                        </a>
+                      </td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+</div>
+    <!-- content-wrapper ends -->
+
+
+
+
+{% endblock %}
