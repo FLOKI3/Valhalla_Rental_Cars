@@ -55,9 +55,13 @@ urlpatterns = [
 
     path('invoice/<int:reservation_id>', views.invoice_view, name='invoice'),
 
-    path('create_invoices/', views.create_invoices, name='create_invoices'),
+    path('custom-invoices/', views.custom_invoices, name='custom_invoices'),
     path('print-invoice/<int:invoice_id>/', views.print_invoice, name='printinvoice'),
     path('invoice/print/<int:invoice_id>/', views.pdf_invoice, name='pdfinvoice'),
+
+
+
+    path('reservation/print/<int:reservation_id>/', views.pdf_reservation, name='pdf_reservation'),
 
     
 ]

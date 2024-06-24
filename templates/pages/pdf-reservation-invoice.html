@@ -1,0 +1,233 @@
+{% load static %}
+<!-- templates/registration/login.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>RPM Cars Marrakech</title>
+    <!-- Add Bootstrap CSS or other styles here -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <link rel="icon" href="{% static 'images/logog_mini.png' %}">
+    <style>
+        /* Add your print-specific styles here */
+        @media print {
+            .no-print { display: none; }
+        }
+        body{margin-top:20px;
+            background:#f4f5f7;
+            }
+            
+            .card-footer-btn {
+                display: flex;
+                align-items: center;
+                border-top-left-radius: 0!important;
+                border-top-right-radius: 0!important;
+            }
+            .text-uppercase-bold-sm {
+                text-transform: uppercase!important;
+                font-weight: 500!important;
+                letter-spacing: 2px!important;
+                font-size: .85rem!important;
+            }
+            .hover-lift-light {
+                transition: box-shadow .25s ease,transform .25s ease,color .25s ease,background-color .15s ease-in;
+            }
+            .justify-content-center {
+                justify-content: center!important;
+            }
+            .btn-group-lg>.btn, .btn-lg {
+                padding: 0.8rem 1.85rem;
+                font-size: 1.1rem;
+                border-radius: 0.3rem;
+            }
+            .btn-dark {
+                color: #fff;
+                background-color: #1e2e50;
+                border-color: #1e2e50;
+            }
+            
+            .card {
+                position: relative;
+                display: flex;
+                flex-direction: column;
+                min-width: 0;
+                word-wrap: break-word;
+                background-color: #fff;
+                background-clip: border-box;
+                border: 1px solid rgba(30,46,80,.09);
+                border-radius: 0.25rem;
+                box-shadow: 0 20px 27px 0 rgb(0 0 0 / 5%);
+            }
+            
+            .p-5 {
+                padding: 3rem!important;
+            }
+            .card-body {
+                flex: 1 1 auto;
+                padding: 1.5rem 1.5rem;
+            }
+            
+            tbody, td, tfoot, th, thead, tr {
+                border-color: inherit;
+                border-style: solid;
+                border-width: 0;
+            }
+            
+            .table td, .table th {
+                border-bottom: 0;
+                border-top: 1px solid #edf2f9;
+            }
+            .table>:not(caption)>*>* {
+                padding: 1rem 1rem;
+                background-color: var(--bs-table-bg);
+                border-bottom-width: 1px;
+                box-shadow: inset 0 0 0 9999px var(--bs-table-accent-bg);
+            }
+            .px-0 {
+                padding-right: 0!important;
+                padding-left: 0!important;
+            }
+            .table thead th, tbody td, tbody th {
+                vertical-align: middle;
+            }
+            tbody, td, tfoot, th, thead, tr {
+                border-color: inherit;
+                border-style: solid;
+                border-width: 0;
+            }
+            
+            .mt-5 {
+                margin-top: 3rem!important;
+            }
+            
+            .icon-circle[class*=text-] [fill]:not([fill=none]), .icon-circle[class*=text-] svg:not([fill=none]), .svg-icon[class*=text-] [fill]:not([fill=none]), .svg-icon[class*=text-] svg:not([fill=none]) {
+                fill: currentColor!important;
+            }
+            .svg-icon>svg {
+                width: 1.45rem;
+                height: 1.45rem;
+            }
+    </style>
+</head>
+<body>
+    <div class="container mt-6 mb-7">
+        <div class="row justify-content-center">
+          <div class="col-lg-12 col-xl-7">
+            <div class="card">
+              <div class="card-body p-5">
+                <h2>
+                    RPM Facture,
+                  </h2>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="text-muted mb-2">N° De Facture.</div>
+                          <strong>#{{reservation.id}}</strong>
+                        </div>
+                        <div class="col-md-6 text-md-end">
+                          <div class="text-muted mb-2">Date De Paiement</div>
+                          <strong>{{reservation.start_date}}</strong>
+                        </div>
+                      </div>
+                      <div class="border-top border-gray-200 mt-4 py-4">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="text-muted mb-2">Client</div>
+                        <strong>
+                          {{reservation.client}}
+                        </strong>
+                        <p class="fs-sm">
+                          Adresse : {{reservation.client.address}}
+                          <br>
+                          CIN : {{reservation.client.CIN}}
+                          <br>
+                          Date De Naissance : {{reservation.client.birth_date}}
+                          <br>
+                          Email : 
+                          <a href="#!" class="text-purple">
+                          {{reservation.client.email}}
+                          </a>
+                          <br>
+                          N° de Téléphone : 
+                          <a href="#!" class="text-purple">
+                            {{reservation.client.phone_number}}
+                          </a>
+                        </p>
+                      </div>
+                      <div class="col-md-6 text-md-end">
+                        <div class="text-muted mb-2">Paiement à</div>
+                        <strong>
+                          RPM Cars
+                        </strong>
+                        <p class="fs-sm">
+                          162 Avenue Principale, Marrakech 40000
+                          <br>
+                          <a href="#!" class="text-purple">rpmmarrakech@gmail.com
+                          </a>
+                          <br>
+                          <a href="#!" class="text-purple">+ 212 700 788 788
+                          </a>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th scope="col">Modele</th>
+                        <th scope="col">Matricule</th>
+                        <th scope="col">Date de depart</th>
+                        <th scope="col">Date de retour</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>{{reservation.car.model}}</td>
+                        <td>{{reservation.car.matricule}}</td>
+                        <td>{{reservation.start_date}}</td>
+                        <td>{{reservation.end_date}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+      
+                  
+      
+                  <table class="table border-bottom border-gray-200 mt-3">
+                    <thead>
+                      <tr>
+                        <th scope="col" class="fs-sm text-dark text-uppercase-bold-sm px-0"></th>
+                        <th scope="col" class="fs-sm text-dark text-uppercase-bold-sm text-end px-0">Montant</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td class="px-0">Jours</td>
+                        <td class="text-end px-0">{{reservation.total_days}}</td>
+                      </tr>
+                      <tr>
+                        <td class="px-0">Prix Jours</td>
+                        <td class="text-end px-0">{{reservation.car.price_day}} DH</td>
+                      </tr>
+                      
+                    </tbody>
+                  </table>
+      
+                  <div class="mt-5">
+                    
+                    <div class="d-flex justify-content-end mt-3">
+                      <h5 class="me-3">Total: </h5>
+                      <h5 class="text-success"> {{total_amount}} DH</h5>
+                    </div>
+                  </div>
+                </div>
+                <!--
+                <button onclick="window.print()" type="submit" class="btn btn-dark btn-icon-text" style="margin-bottom: 10px;">
+                    <i class="ti-printer btn-icon-prepend"></i> Imprimer 
+                </button>
+                -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </body>
+    </html>

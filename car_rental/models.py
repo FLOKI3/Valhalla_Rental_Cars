@@ -213,6 +213,9 @@ class Notification(models.Model):
     def __str__(self):
         return self.message
 
+    @staticmethod
+    def create_notification(message, recipient):
+        Notification.objects.create(message=message, recipient=recipient)
 
 
 

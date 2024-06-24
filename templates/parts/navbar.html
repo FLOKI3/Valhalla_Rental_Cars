@@ -38,9 +38,13 @@
           <li class="nav-item dropdown">
             <a class="nav-link count-indicator" id="notificationDropdown" href="#" data-bs-toggle="dropdown">
                 <i class="icon-bell"></i>
+                {% if unread_notifications.count %}
                 <span class="count">
                     {{ unread_notifications.count }}
                 </span>
+                {% else %}
+
+                {% endif %}
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list pb-0"
                  aria-labelledby="notificationDropdown" style="max-height: 300px; overflow-y: auto;">
