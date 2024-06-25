@@ -206,16 +206,25 @@ class Reservation(models.Model):
 
 class Notification(models.Model):
     message = models.CharField(max_length=255)
-    recipient = models.ForeignKey(User, on_delete=models.PROTECT)
+    recipient = models.ForeignKey(User, on_delete=models.PROTECT, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     is_read = models.BooleanField(default=False)
+    event_identifier = models.CharField(max_length=50, default='default_identifier')
 
     def __str__(self):
         return self.message
 
-    @staticmethod
-    def create_notification(message, recipient):
-        Notification.objects.create(message=message, recipient=recipient)
+    @classmethod
+    def create_notification(cls, message, recipient, event_identifier):
+        notification, created = cls.objects.get_or_create(
+            recipient=recipient,
+            event_identifier=event_identifier,
+            defaults={'message': message}
+        )
+        if not created:
+            notification.message = message
+            notification.save()
+            
 
 
 
