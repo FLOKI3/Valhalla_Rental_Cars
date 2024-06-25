@@ -134,10 +134,37 @@ def car_cards(request):
     notifications = Notification.objects.filter(recipient=request.user).order_by('-created_at')
     unread_notifications = notifications.filter(is_read=False)
 
-    
+    cars = Car.objects.all().order_by('-created_at')
+
+    warning_date = now().date() + timedelta(days=2)
+
+    for car in cars:
+        latest_reservation = Reservation.objects.filter(car=car).order_by('-end_date').first()
+        if latest_reservation:
+            end_mileage = latest_reservation.end_mileage if latest_reservation.end_mileage is not None else 0
+        else:
+            end_mileage = 0  # or some default value if there's no reservation
+
+        # Check maintenance status
+        maintenance_status = ''
+
+        try:
+            maintenance = Maintenance.objects.filter(car=car).latest('created_at')
+        except Maintenance.DoesNotExist:
+            maintenance = None
+
+        if maintenance:
+            if maintenance.insurance_end and maintenance.insurance_end <= warning_date:
+                maintenance_status = 'Insurance Expired'
+            elif maintenance.technical_visit and maintenance.technical_visit <= warning_date:
+                maintenance_status = 'Technical Visit Expired'
+            elif maintenance.oil_change and maintenance.oil_change <= end_mileage:
+                maintenance_status = 'Oil Change Needed'
+
+        car.maintenance_status = maintenance_status
 
     context = {
-        'cars': Car.objects.all().order_by('-created_at'),
+        'cars': cars,
         'form': CarForm(),
         'notifications': notifications,
         'unread_notifications': unread_notifications,
@@ -149,14 +176,34 @@ def car_detail(request, id):
     unread_notifications = notifications.filter(is_read=False)
     car = get_object_or_404(Car, id=id)
     latest_reservation = Reservation.objects.filter(car=car).order_by('-end_date').first()
-
     
+    end_mileage = latest_reservation.end_mileage if latest_reservation else 0
+    
+    # Fetch the latest maintenance record for the car
+    maintenance = Maintenance.objects.filter(car=car).order_by('-created_at').first()
+
+    warning_date = now().date() + timedelta(days=2)
+
+    maintenance_status = None
+    if maintenance:
+        if maintenance.insurance_end and maintenance.insurance_end <= warning_date:
+            maintenance_status = "Insurance Expired"
+        elif maintenance.technical_visit and maintenance.technical_visit <= warning_date:
+            maintenance_status = "Technical Visit Expired"
+        elif maintenance.oil_change and end_mileage >= maintenance.oil_change:
+            maintenance_status = "Oil Change Needed"
+        else:
+            maintenance_status = "All Good"
+    # Fetch the latest maintenance record for the car
+
 
     context = {
         'latest_reservation': latest_reservation,
         'car': car,
         'notifications': notifications,
         'unread_notifications': unread_notifications,        
+        'end_mileage': end_mileage,        
+        'maintenance_status': maintenance_status,        
     }
     return render(request, 'pages/car-detail.html', context)
 @login_required
@@ -323,7 +370,7 @@ def reservations(request):
                 description=f"Added reservation for {reservation.client.first_name} {reservation.client.last_name}"
             )
             
-            return HttpResponseRedirect('/reservations')
+            return redirect('reservations')
     
     # Default queryset to display all reservations sorted by created_at
     reservations_queryset = Reservation.objects.all().order_by('-created_at')
@@ -1049,7 +1096,7 @@ def cars_maintenance(request):
                 action='add',
                 description=f"Added Maintenance for: {maintenance.car}"
             )
-            
+            return redirect('/maintenance')
     
     for maintenance in maintenances:
         latest_reservation = Reservation.objects.filter(car=maintenance.car).order_by('-end_date').first()
