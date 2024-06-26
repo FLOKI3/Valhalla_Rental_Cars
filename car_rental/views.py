@@ -91,11 +91,19 @@ def cars(request):
         
             return HttpResponseRedirect(reverse('cars'))
         
-       
+    cars = Car.objects.all().order_by('-created_at')
+    
+    for car in cars:
+        car.total_spent = car.total_amount_spent()
+        max_budget = 50000  # Example maximum budget, adjust according to your needs
+        if max_budget > 0:
+            car.progress_percentage = (car.total_spent / max_budget) * 100
+        else:
+            car.progress_percentage = 0
 
     context = {
         'category': Category.objects.all(),
-        'cars': Car.objects.all().order_by('-created_at'),
+        'cars': cars,
         'form': CarForm(),
         'notifications': notifications,
         'unread_notifications': unread_notifications,
@@ -107,6 +115,10 @@ def car_edit(request, id):
     notifications = Notification.objects.filter(recipient=request.user).order_by('-created_at')
     unread_notifications = notifications.filter(is_read=False)
     car_id = Car.objects.get(id=id)
+    entry_spends = Spend.objects.filter(entry_car=car_id).order_by('-created_at')
+    expense_spends = Spend.objects.filter(expense_car=car_id).order_by('-created_at')
+    recent_spends = list(entry_spends) + list(expense_spends)
+    recent_spends.sort(key=lambda spend: spend.created_at, reverse=True)
     if request.method == 'POST':
         car_save = CarForm(request.POST, request.FILES, instance=car_id)
         if car_save.is_valid():
@@ -127,6 +139,7 @@ def car_edit(request, id):
         'form': car_save,
         'notifications': notifications,
         'unread_notifications': unread_notifications,
+        'recent_spends': recent_spends,
     }
     return render(request, 'pages/car-edit.html', context)
 @login_required
@@ -262,11 +275,12 @@ def clients(request):
             return HttpResponseRedirect('/clients')
         
 
-    
-
+    clients = Client.objects.all().order_by('-created_at')
+    for client in clients:
+        client.total_spent = client.total_amount_spent()
 
     context = {
-        'clients': Client.objects.all().order_by('-created_at'),
+        'clients': clients,
         'form': ClientForm(),
         'notifications': notifications,
         'unread_notifications': unread_notifications,

@@ -62,6 +62,8 @@
                       <th> Type </th>
                       <th> Model </th>
                       <th> Registration N° </th>
+                      <th> Progress </th>
+                      <th> Amount </th>
                       <th> Status </th>
                       <th> Edit </th>
                       <th> Delete </th>
@@ -74,6 +76,16 @@
                       <td> {{car.type}} </td>
                       <td> {{car.model}} </td>
                       <td> {{car.matricule}} </td>
+                      <td>
+                        <div class="progress">
+                            <div class="progress-bar bg-success" role="progressbar"
+                                style="width: {{ car.progress_percentage }}%" aria-valuenow="{{ car.progress_percentage }}"
+                                aria-valuemin="0" aria-valuemax="100">
+                                {{ car.progress_percentage }}%
+                            </div>
+                        </div>
+                    </td>
+                      <td> {{car.total_spent}} </td>
                       <td>
                         {% if car.status == 'available' %}
                         <label class="badge badge-success">{{car.status}}</label>

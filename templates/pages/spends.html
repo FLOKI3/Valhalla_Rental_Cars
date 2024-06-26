@@ -28,8 +28,7 @@
                     <tr>
                         <th>Date</th>
                         <th>Amount</th>
-                        <th>Client</th>
-                        <th>Worker</th>
+                        <th>Client/Car/Worker</th>
                         <th>Payment Method</th>
                         <th>Description</th>
                         <th>Edit</th>
@@ -54,17 +53,21 @@
                         {% endif %}
 
                         {% if spend.entry_client %}
-                        <td>{{spend.entry_client}}</td>
+                        <td>{{spend.entry_client}} (Client)</td>
                         {% elif spend.expense_client %}
-                        <td>{{spend.expense_client}}</td>
-                        {% else %}
-                        <td></td>
-                        {% endif %}
+                        <td>{{spend.expense_client}} (Client)</td>
+                        
+                        
+                        {% elif spend.entry_car %}
+                        <td>{{spend.entry_car}}</td>
+                        {% elif spend.expense_car %}
+                        <td>{{spend.expense_car}}</td>
+                        
 
-                        {% if spend.entry_worker %}
-                        <td>{{spend.entry_worker}}</td>
+                        {% elif spend.entry_worker %}
+                        <td>{{spend.entry_worker}} (Worker)</td>
                         {% elif spend.expense_worker %}
-                        <td>{{spend.expense_worker}}</td>
+                        <td>{{spend.expense_worker}} (Worker)</td>
                         {% else %}
                         <td></td>
                         {% endif %}

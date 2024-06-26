@@ -1,15 +1,76 @@
 {% extends 'base.html' %}
-
 {% block content %}
 <div class="main-panel">
     <div class="content-wrapper">
       <div class="row">
 
-
-
+        <div class="col-sm-12">
+            <div class="home-tab">
+                <div class="d-sm-flex align-items-center justify-content-between">
+                    <div>
+                        <div class="btn-wrapper">
+                            <!-- Button trigger modal -->
+                            <a href="#" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#spendsModal">
+                                <i class="ti-clipboard"></i> Spends
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         
-
-
+        <!-- Modal -->
+        <div class="modal fade" id="spendsModal" tabindex="-1" aria-labelledby="spendsModalLabel" aria-hidden="true">
+            <div style="width:400px;" class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="spendsModalLabel">Recent Spends</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        {% if recent_spends %}
+                        {% for spend in recent_spends %}
+                        <div class="list align-items-center border-bottom py-2 spend-item {% if forloop.counter > 5 %}d-none{% endif %}" id="spend-{{ forloop.counter }}">
+                            <div class="wrapper w-100">
+                                {% if spend.entry_amount %}
+                                <p class="mb-2 fw-medium text-success"><i class="ti-arrow-up"></i> {{ spend.entry_amount }} DH </p>
+                                {% else %}
+                                <p class="mb-2 fw-medium text-danger"><i class="ti-arrow-down"></i> {{ spend.expense_amount }} DH </p>
+                                {% endif %}
+                                <p class="text-small text-muted">{{ spend.entry_description|default:spend.expense_description }}</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="d-flex align-items-center">
+                                        <i class="mdi mdi-calendar text-muted me-1"></i>
+                                        {% if spend.entry_date %}
+                                        <p class="mb-0 text-small text-muted">{{ spend.entry_date }}</p>
+                                        {% else %}
+                                        <p class="mb-0 text-small text-muted">{{ spend.expense_date }}</p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        {% if recent_spends|length > 5 %}
+                        <div class="list align-items-center pt-3">
+                            <div class="wrapper w-100">
+                                <p class="mb-0">
+                                    <a href="#" class="fw-bold text-primary" id="show-all-spends">Show all <i class="mdi mdi-arrow-right ms-2"></i></a>
+                                </p>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% else %}
+                        <p>No recent spends found.</p>
+                        {% endif %}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
 
         <div class="col-12 grid-margin">
             <div class="card">
@@ -34,7 +95,6 @@
                         </div>
                     </div>
                     </div>
-                    
                 </div>
                 <div class="row">
                     <div class="col-md-6">
@@ -53,7 +113,6 @@
                         </div>
                     </div>
                     </div>
-                    
                 </div>
                 <div class="row">
                 <div class="col-md-6">
@@ -112,18 +171,11 @@
                             </div>
                         </div>
                     </div>
-                    
-
-
-
-
                     </div>
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                     <a href="{% url "cars" %}" class="btn btn-light me-md-2" type="button">Back</a>
                     <button class="btn btn-success" type="submit">Save</button>
-                    
                 </div>
-                
                 </form>
             </div>
             </div>

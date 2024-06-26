@@ -43,6 +43,19 @@ class Car(models.Model):
     def __str__(self):
         return f'{self.model} ({self.matricule})'
     
+    def total_amount_spent(self):
+        # Calculate total amount spent on reservations
+        total_reservations = sum(reservation.calculate_total_cost() for reservation in self.reservation_set.all())
+
+        # Calculate total entry amount (income)
+        total_entry_amount = sum(spend.entry_amount for spend in self.entry_spends.all() if spend.entry_amount is not None)
+
+        # Calculate total expense amount
+        total_expense_amount = sum(spend.expense_amount for spend in self.expense_spends.all() if spend.expense_amount is not None)
+
+        # Total amount spent is total reservations + total entry amount - total expense amount
+        total_spent = total_reservations + total_entry_amount - total_expense_amount
+        return total_spent
 
 
 
@@ -78,9 +91,17 @@ class Client(models.Model):
 
     def total_amount_spent(self):
         # Calculate total amount spent on reservations
-        total = sum(reservation.calculate_total_cost() for reservation in self.reservation_set.all())
-        return total
+        total_reservations = sum(reservation.calculate_total_cost() for reservation in self.reservation_set.all())
 
+        # Calculate total entry amount (income)
+        total_entry_amount = sum(spend.entry_amount for spend in self.entry_spends.all() if spend.entry_amount is not None)
+
+        # Calculate total expense amount
+        total_expense_amount = sum(spend.expense_amount for spend in self.expense_spends.all() if spend.expense_amount is not None)
+
+        # Total amount spent is total reservations + total entry amount - total expense amount
+        total_spent = total_reservations + total_entry_amount - total_expense_amount
+        return total_spent
 
 
 
