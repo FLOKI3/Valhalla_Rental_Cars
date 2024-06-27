@@ -15,9 +15,7 @@ from django.utils.timezone import now
 from django.utils.http import urlencode
 from car_rental.calculation import calculate_total_amount, calculate_final_amount
 
-from django.conf import settings
-from google_auth_oauthlib.flow import Flow
-from googleapiclient.discovery import build
+
 
 
 
@@ -822,48 +820,7 @@ def search(request):
 
 
 
-SCOPES = ['https://www.googleapis.com/auth/calendar']
 
-def get_google_calendar_service():
-    flow = Flow.from_client_secrets_file(
-        settings.GOOGLE_CREDENTIALS_FILE,
-        scopes=SCOPES,
-        redirect_uri='http://localhost:8000/oauth2callback'  # Change this to your registered redirect URI
-    )
-    authorization_url, _ = flow.authorization_url(prompt='consent')
-    return authorization_url
-
-def google_oauth_callback(request):
-    flow = Flow.from_client_secrets_file(
-        settings.GOOGLE_CREDENTIALS_FILE,
-        scopes=SCOPES,
-        redirect_uri='http://localhost:8000/oauth2callback'  # Change this to your registered redirect URI
-    )
-    flow.fetch_token(authorization_response=request.build_absolute_uri())
-    credentials = flow.credentials
-    service = build('calendar', 'v3', credentials=credentials)
-    
-    reservations = Reservation.objects.all()
-    for reservation in reservations:
-        event = {
-            'summary': f'Car Reservation: {reservation.car.model}',
-            'description': f'Reservation details: {reservation.car.model} - {reservation.client.first_name}',
-            'start': {
-                'dateTime': reservation.start_date.isoformat(),
-                'timeZone': 'UTC',
-            },
-            'end': {
-                'dateTime': reservation.end_date.isoformat(),
-                'timeZone': 'UTC',
-            },
-        }
-        service.events().insert(calendarId='primary', body=event).execute()
-    
-    return redirect('https://calendar.google.com/calendar')
-
-def add_all_reservations_to_calendar(request):
-    authorization_url = get_google_calendar_service()
-    return redirect(authorization_url)
 
 
 

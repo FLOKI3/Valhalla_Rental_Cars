@@ -144,5 +144,3 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 
-
-GOOGLE_CREDENTIALS_FILE = os.path.join(BASE_DIR, 'valhalla_project/credentials.json')

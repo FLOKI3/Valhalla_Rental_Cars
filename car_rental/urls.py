@@ -49,8 +49,6 @@ urlpatterns = [
     
 
     
-    path('add-all-reservations-to-calendar/', views.add_all_reservations_to_calendar, name='add_all_reservations_to_calendar'),
-    path('oauth2callback/', views.google_oauth_callback, name='google_oauth_callback'),
     
 
     path('invoice/<int:reservation_id>', views.invoice_view, name='invoice'),
