@@ -189,8 +189,13 @@ def car_detail(request, id):
     unread_notifications = notifications.filter(is_read=False)
     car = get_object_or_404(Car, id=id)
     latest_reservation = Reservation.objects.filter(car=car).order_by('-end_date').first()
+    parking = latest_reservation.parking
     
-    end_mileage = latest_reservation.end_mileage if latest_reservation else 0
+    if latest_reservation:
+        end_mileage = latest_reservation.end_mileage if latest_reservation.end_mileage is not None else latest_reservation.start_mileage
+        end_mileage = end_mileage if end_mileage is not None else 0
+    else:
+        end_mileage = 0
     
     # Fetch the latest maintenance record for the car
     maintenance = Maintenance.objects.filter(car=car).order_by('-created_at').first()
@@ -217,6 +222,7 @@ def car_detail(request, id):
         'unread_notifications': unread_notifications,        
         'end_mileage': end_mileage,        
         'maintenance_status': maintenance_status,        
+        'parking': parking,        
     }
     return render(request, 'pages/car-detail.html', context)
 @login_required
@@ -548,21 +554,6 @@ def stats(request):
     final_amount = calculate_final_amount(spends)
 
 
-    for maintenance in Maintenance.objects.all():
-        car = maintenance.car
-        # Fetch the latest reservation for the car
-        latest_reservation = Reservation.objects.filter(car=car, status='ended').order_by('-end_date').first()
-        
-        if latest_reservation:
-            if maintenance.insurance_end < now().date():
-                message = f"Insurance for {car} has expired."
-                Notification.create_notification(message, request.user)
-            if maintenance.technical_visit and maintenance.technical_visit < now().date():
-                message = f"Technical visit for {car} has expired."
-                Notification.create_notification(message, request.user)
-            if maintenance.oil_change < latest_reservation.end_mileage:
-                message = f"Oil change needed for {car}."
-                Notification.create_notification(message, request.user)
 
 
     context = {
@@ -679,22 +670,7 @@ def spends(request):
     notifications = Notification.objects.filter(recipient=request.user).order_by('-created_at')
     unread_notifications = notifications.filter(is_read=False)   
     
-    
-    for maintenance in Maintenance.objects.all():
-        car = maintenance.car
-        # Fetch the latest reservation for the car
-        latest_reservation = Reservation.objects.filter(car=car, status='ended').order_by('-end_date').first()
-
-        if latest_reservation:
-            if maintenance.insurance_end < now().date():
-                message = f"Insurance for {car} has expired."
-                Notification.create_notification(message, request.user)
-            if maintenance.technical_visit and maintenance.technical_visit < now().date():
-                message = f"Technical visit for {car} has expired."
-                Notification.create_notification(message, request.user)
-            if maintenance.oil_change < latest_reservation.end_mileage:
-                message = f"Oil change needed for {car}."
-                Notification.create_notification(message, request.user)
+   
 
 
     context = {
@@ -722,21 +698,6 @@ def spends_delete(request, id):
     unread_notifications = notifications.filter(is_read=False)   
     
     
-    for maintenance in Maintenance.objects.all():
-        car = maintenance.car
-        # Fetch the latest reservation for the car
-        latest_reservation = Reservation.objects.filter(car=car, status='ended').order_by('-end_date').first()
-
-        if latest_reservation:
-            if maintenance.insurance_end < now().date():
-                message = f"Insurance for {car} has expired."
-                Notification.create_notification(message, request.user)
-            if maintenance.technical_visit and maintenance.technical_visit < now().date():
-                message = f"Technical visit for {car} has expired."
-                Notification.create_notification(message, request.user)
-            if maintenance.oil_change < latest_reservation.end_mileage:
-                message = f"Oil change needed for {car}."
-                Notification.create_notification(message, request.user)
     
     context = {
         'notifications': notifications,
@@ -767,21 +728,6 @@ def spends_edit(request, id):
     unread_notifications = notifications.filter(is_read=False)   
     
     
-    for maintenance in Maintenance.objects.all():
-        car = maintenance.car
-        # Fetch the latest reservation for the car
-        latest_reservation = Reservation.objects.filter(car=car, status='ended').order_by('-end_date').first()
-
-        if latest_reservation:
-            if maintenance.insurance_end < now().date():
-                message = f"Insurance for {car} has expired."
-                Notification.create_notification(message, request.user)
-            if maintenance.technical_visit and maintenance.technical_visit < now().date():
-                message = f"Technical visit for {car} has expired."
-                Notification.create_notification(message, request.user)
-            if maintenance.oil_change < latest_reservation.end_mileage:
-                message = f"Oil change needed for {car}."
-                Notification.create_notification(message, request.user)
     
     context = {
         'form': add_spend,
@@ -806,21 +752,6 @@ def invoice_view(request, reservation_id):
     unread_notifications = notifications.filter(is_read=False)   
     
     
-    for maintenance in Maintenance.objects.all():
-        car = maintenance.car
-        # Fetch the latest reservation for the car
-        latest_reservation = Reservation.objects.filter(car=car, status='ended').order_by('-end_date').first()
-
-        if latest_reservation:
-            if maintenance.insurance_end < now().date():
-                message = f"Insurance for {car} has expired."
-                Notification.create_notification(message, request.user)
-            if maintenance.technical_visit and maintenance.technical_visit < now().date():
-                message = f"Technical visit for {car} has expired."
-                Notification.create_notification(message, request.user)
-            if maintenance.oil_change < latest_reservation.end_mileage:
-                message = f"Oil change needed for {car}."
-                Notification.create_notification(message, request.user)
     context = {
         'reservation': reservation,
         'notifications': notifications,
@@ -860,22 +791,6 @@ def search(request):
     notifications = Notification.objects.filter(recipient=request.user).order_by('-created_at')
     unread_notifications = notifications.filter(is_read=False)   
     
-    
-    for maintenance in Maintenance.objects.all():
-        car = maintenance.car
-        # Fetch the latest reservation for the car
-        latest_reservation = Reservation.objects.filter(car=car, status='ended').order_by('-end_date').first()
-
-        if latest_reservation:
-            if maintenance.insurance_end < now().date():
-                message = f"Insurance for {car} has expired."
-                Notification.create_notification(message, request.user)
-            if maintenance.technical_visit and maintenance.technical_visit < now().date():
-                message = f"Technical visit for {car} has expired."
-                Notification.create_notification(message, request.user)
-            if maintenance.oil_change < latest_reservation.end_mileage:
-                message = f"Oil change needed for {car}."
-                Notification.create_notification(message, request.user)
 
     context = {
         'query': query,
@@ -1006,21 +921,6 @@ def custom_invoices(request):
     unread_notifications = notifications.filter(is_read=False)   
     
     
-    for maintenance in Maintenance.objects.all():
-        car = maintenance.car
-        # Fetch the latest reservation for the car
-        latest_reservation = Reservation.objects.filter(car=car, status='ended').order_by('-end_date').first()
-
-        if latest_reservation:
-            if maintenance.insurance_end < now().date():
-                message = f"Insurance for {car} has expired."
-                Notification.create_notification(message, request.user)
-            if maintenance.technical_visit and maintenance.technical_visit < now().date():
-                message = f"Technical visit for {car} has expired."
-                Notification.create_notification(message, request.user)
-            if maintenance.oil_change < latest_reservation.end_mileage:
-                message = f"Oil change needed for {car}."
-                Notification.create_notification(message, request.user)
         
     context = {
         'notifications': notifications,
@@ -1039,21 +939,6 @@ def print_invoice(request, invoice_id):
     unread_notifications = notifications.filter(is_read=False)   
     
     
-    for maintenance in Maintenance.objects.all():
-        car = maintenance.car
-        # Fetch the latest reservation for the car
-        latest_reservation = Reservation.objects.filter(car=car, status='ended').order_by('-end_date').first()
-
-        if latest_reservation:
-            if maintenance.insurance_end < now().date():
-                message = f"Insurance for {car} has expired."
-                Notification.create_notification(message, request.user)
-            if maintenance.technical_visit and maintenance.technical_visit < now().date():
-                message = f"Technical visit for {car} has expired."
-                Notification.create_notification(message, request.user)
-            if maintenance.oil_change < latest_reservation.end_mileage:
-                message = f"Oil change needed for {car}."
-                Notification.create_notification(message, request.user)
     
     context = {
         'invoice': invoice,
@@ -1108,7 +993,7 @@ def cars_maintenance(request):
             UserActionLog.objects.create(
                 user=request.user,
                 action='add',
-                description=f"Added Maintenance for: {maintenance.car}"
+                description=f"Added Maintenance for: {maintenances.car}"
             )
             return redirect('/maintenance')
     
@@ -1125,21 +1010,6 @@ def cars_maintenance(request):
     unread_notifications = notifications.filter(is_read=False)   
     
     
-    for maintenance in Maintenance.objects.all():
-        car = maintenance.car
-        # Fetch the latest reservation for the car
-        latest_reservation = Reservation.objects.filter(car=car, status='ended').order_by('-end_date').first()
-
-        if latest_reservation:
-            if maintenance.insurance_end < now().date():
-                message = f"Insurance for {car} has expired."
-                Notification.create_notification(message, request.user)
-            if maintenance.technical_visit and maintenance.technical_visit < now().date():
-                message = f"Technical visit for {car} has expired."
-                Notification.create_notification(message, request.user)
-            if maintenance.oil_change < latest_reservation.end_mileage:
-                message = f"Oil change needed for {car}."
-                Notification.create_notification(message, request.user)
 
     context = {
         'form': form,
@@ -1168,21 +1038,6 @@ def maintenance_delete(request, id):
     unread_notifications = notifications.filter(is_read=False)   
     
     
-    for maintenance in Maintenance.objects.all():
-        car = maintenance.car
-        # Fetch the latest reservation for the car
-        latest_reservation = Reservation.objects.filter(car=car, status='ended').order_by('-end_date').first()
-
-        if latest_reservation:
-            if maintenance.insurance_end < now().date():
-                message = f"Insurance for {car} has expired."
-                Notification.create_notification(message, request.user)
-            if maintenance.technical_visit and maintenance.technical_visit < now().date():
-                message = f"Technical visit for {car} has expired."
-                Notification.create_notification(message, request.user)
-            if maintenance.oil_change < latest_reservation.end_mileage:
-                message = f"Oil change needed for {car}."
-                Notification.create_notification(message, request.user)
     context = {
         'notifications': notifications,
         'unread_notifications': unread_notifications,
@@ -1211,22 +1066,6 @@ def maintenance_edit(request, id):
     notifications = Notification.objects.filter(recipient=request.user).order_by('-created_at')
     unread_notifications = notifications.filter(is_read=False)   
     
-    
-    for maintenance in Maintenance.objects.all():
-        car = maintenance.car
-        # Fetch the latest reservation for the car
-        latest_reservation = Reservation.objects.filter(car=car, status='ended').order_by('-end_date').first()
-
-        if latest_reservation:
-            if maintenance.insurance_end < now().date():
-                message = f"Insurance for {car} has expired."
-                Notification.create_notification(message, request.user)
-            if maintenance.technical_visit and maintenance.technical_visit < now().date():
-                message = f"Technical visit for {car} has expired."
-                Notification.create_notification(message, request.user)
-            if maintenance.oil_change < latest_reservation.end_mileage:
-                message = f"Oil change needed for {car}."
-                Notification.create_notification(message, request.user)
 
     context = {
         'form': maintenance_save,

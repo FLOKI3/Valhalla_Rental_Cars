@@ -243,15 +243,24 @@
             {% endif %}
             <!-- Display Parking Information -->
     {% if car.reservation_set.exists %}
-        {% for reservation in car.reservation_set.all %}
-        {% if reservation.parking %}
-        <li>Parking: {{ reservation.parking }}</li>
+        {% if latest_reservation.parking %}
+        <li>Parking: {{ latest_reservation.parking }}</li>
         {% endif %}
-        {% endfor %}
     
         {% endif %}
             <li>Car Power: <span>{{car.car_power}}</span></li>
-            <li>Mileage: <span>{{end_mileage}} KM</span></li>
+            {% if latest_reservation.end_mileage %}
+            <li>Mileage: <span>
+              {{ end_mileage }} KM
+            </span></li>
+            {% elif latest_reservation.start_mileage %}
+            <li>Mileage: <span>
+              {{ latest_reservation.start_mileage }} KM
+            </span></li>
+            {% else %}
+            <li>Mileage: <span>
+            {{end_mileage}} KM
+            {% endif %}
             
           </ul>
         </div>

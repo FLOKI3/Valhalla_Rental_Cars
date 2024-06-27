@@ -154,6 +154,10 @@ class Reservation(models.Model):
         ('parking_a','Parking A'),
         ('parking_b','Parking B'),
     }
+    guarantee_choices = {
+        ('money','Money'),
+        ('passport','Passport'),
+    }
 
     car = models.ForeignKey(Car, on_delete=models.CASCADE)
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
@@ -161,6 +165,7 @@ class Reservation(models.Model):
     end_date = models.DateField()
     livraison_location = models.CharField(max_length=50)
     livraison_time = models.TimeField(auto_now=False, auto_now_add=False)
+    guarantee = models.CharField(max_length=50, choices=guarantee_choices, null=True, blank=True)
     money_guarantee = models.IntegerField(null=True, blank=True)
     start_mileage = models.IntegerField(null=True, blank=True)
     parking = models.CharField(max_length=50, choices=parking_locations, null=True, blank=True)
@@ -194,6 +199,13 @@ class Reservation(models.Model):
         return total_cost
     
 
+    def save(self, *args, **kwargs):
+        if not self.pk:  # if this is a new reservation
+            latest_reservation = Reservation.objects.filter(car=self.car).order_by('-end_date').first()
+            if latest_reservation:
+                latest_reservation.parking = None
+                latest_reservation.save()
+        super(Reservation, self).save(*args, **kwargs)
    
 
     def __str__(self):
