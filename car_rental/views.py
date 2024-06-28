@@ -1030,3 +1030,62 @@ def maintenance_edit(request, id):
         'unread_notifications': unread_notifications,
     }
     return render(request, 'pages/maintenance-edit.html', context)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@login_required
+def calendar_view(request):
+    reservations = Reservation.objects.all()
+    cars = Car.objects.all()
+    
+    # Preparing data for FullCalendar
+    events = []
+    for reservation in reservations:
+        events.append({
+            'title': f"{reservation.car} - {reservation.client}",
+            'start': reservation.start_date.strftime('%Y-%m-%d'),
+            'end': (reservation.end_date + timedelta(days=1)).strftime('%Y-%m-%d'),
+            'color': 'green' if reservation.status == 'active' else 'grey',
+        })
+
+    context = {
+        'events': events,
+        'cars': cars,
+    }
+    return render(request, 'pages/calendar.html', context)

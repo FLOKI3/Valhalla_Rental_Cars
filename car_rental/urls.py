@@ -61,5 +61,20 @@ urlpatterns = [
 
     path('reservation/print/<int:reservation_id>/', views.pdf_reservation, name='pdf_reservation'),
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+    path('calendar/', views.calendar_view, name='calendar_view'),
+
     
 ]
