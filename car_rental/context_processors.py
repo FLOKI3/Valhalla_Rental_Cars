@@ -1,7 +1,4 @@
-# context_processors.py
-
-from datetime import timedelta
-from django.utils.timezone import now
+from django.utils.timezone import now, timedelta
 from .models import Notification, Maintenance, Reservation
 
 def notifications(request):
@@ -37,6 +34,15 @@ def notifications(request):
                 message = f"Oil change needed for {maintenance.car}."
                 event_identifier = f"{maintenance.car.id}_oil_change_needed"
                 Notification.create_notification(message, request.user, event_identifier)
+
+        # End Reservation Notification Logic
+        upcoming_end_date = now().date() + timedelta(days=1)
+        reservations = Reservation.objects.filter(end_date=upcoming_end_date)
+
+        for reservation in reservations:
+            message = f"Reservation for {reservation.car} is ending soon."
+            event_identifier = f"{reservation.id}_reservation_ending"
+            Notification.create_notification(message, request.user, event_identifier)
 
         return {
             'notifications': notifications,
