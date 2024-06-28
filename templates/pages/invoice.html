@@ -109,6 +109,12 @@
                   <td class="px-0">Prix Jours</td>
                   <td class="text-end px-0">{{reservation.car.price_day}} DH</td>
                 </tr>
+                {% if reservation.discount %}
+                <tr>
+                  <td class="px-0">Remise</td>
+                  <td class="text-end px-0">- {{reservation.discount}} DH</td>
+                </tr>
+                {% endif %}
               </tbody>
             </table>
 

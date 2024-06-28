@@ -179,7 +179,7 @@ class Reservation(models.Model):
     end_mileage = models.IntegerField(null=True, blank=True)
     report = models.CharField(max_length=50, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
-    discount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    discount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True, default=0)
 
 
     def total_days(self):
@@ -190,7 +190,7 @@ class Reservation(models.Model):
     def total_amount(self):
         if self.start_date and self.end_date:
             base_amount = self.total_days() * self.car.price_day
-            discount_amount = base_amount * (self.discount or 0) / 100
+            discount_amount = self.discount or 0
             return base_amount - discount_amount
         return Decimal('0.00')
 
@@ -200,7 +200,7 @@ class Reservation(models.Model):
         if duration == 0:  # Same day rental
             duration = 1
         base_cost = duration * self.car.price_day
-        discount_amount = base_cost * (self.discount or 0) / 100
+        discount_amount = self.discount or 0
         total_cost = base_cost - discount_amount
         return total_cost
     
@@ -332,7 +332,7 @@ class Invoice(models.Model):
 
     start_date = models.DateField(auto_now=False, auto_now_add=False)
     end_date = models.DateField(auto_now=False, auto_now_add=False)
-    discount = models.DecimalField(max_digits=10, decimal_places=2)
+    discount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True, default=0)
 
 
     def total_days(self):
