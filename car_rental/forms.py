@@ -117,6 +117,7 @@ class ReservationForm(forms.ModelForm):
             'end_mileage',
             'report',
             'parking',
+            'discount',
         ]
 
         widgets = {
@@ -138,6 +139,7 @@ class ReservationForm(forms.ModelForm):
             'end_mileage': forms.NumberInput(attrs={'class':'form-control mt-3 mb-3'}),
             'start_date': forms.NumberInput(attrs={'class':'form-control mt-3 mb-3', 'type':'date'}),
             'end_date': forms.NumberInput(attrs={'class':'form-control mt-3 mb-3', 'type':'date'}),
+            'discount': forms.NumberInput(attrs={'class':'form-control', 'type':'number'}),
         }
 
 

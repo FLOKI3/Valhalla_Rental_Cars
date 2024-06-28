@@ -179,6 +179,7 @@ class Reservation(models.Model):
     end_mileage = models.IntegerField(null=True, blank=True)
     report = models.CharField(max_length=50, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    discount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
 
 
     def total_days(self):
@@ -187,15 +188,20 @@ class Reservation(models.Model):
         return 0
 
     def total_amount(self):
-        return self.total_days() * self.car.price_day if self.start_date and self.end_date else Decimal('0.00')
-
+        if self.start_date and self.end_date:
+            base_amount = self.total_days() * self.car.price_day
+            discount_amount = base_amount * (self.discount or 0) / 100
+            return base_amount - discount_amount
+        return Decimal('0.00')
 
     def calculate_total_cost(self):
         # Calculate the number of days rented, ensuring start and end date count correctly
         duration = (self.end_date - self.start_date).days
         if duration == 0:  # Same day rental
             duration = 1
-        total_cost = duration * self.car.price_day
+        base_cost = duration * self.car.price_day
+        discount_amount = base_cost * (self.discount or 0) / 100
+        total_cost = base_cost - discount_amount
         return total_cost
     
 
