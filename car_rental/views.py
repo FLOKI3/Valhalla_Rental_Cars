@@ -187,9 +187,10 @@ def car_detail(request, id):
     unread_notifications = notifications.filter(is_read=False)
     car = get_object_or_404(Car, id=id)
     latest_reservation = Reservation.objects.filter(car=car).order_by('-end_date').first()
-    parking = latest_reservation.parking
+    parking = None
     
     if latest_reservation:
+        parking = latest_reservation.parking
         end_mileage = latest_reservation.end_mileage if latest_reservation.end_mileage is not None else latest_reservation.start_mileage
         end_mileage = end_mileage if end_mileage is not None else 0
     else:

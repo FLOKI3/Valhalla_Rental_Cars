@@ -54,7 +54,19 @@
                 {% for notification in notifications %}
                 <a href="{% url 'reservations' %}?notification_id={{ notification.id }}" class="dropdown-item preview-item py-3">
                     <div class="preview-thumbnail">
-                        <i class="mdi mdi-alert m-auto text-primary"></i>
+                      {% with notification.event_identifier as parts %}
+                      {% if 'insurance_expiring' in parts %}
+                      <i class="mdi mdi-calendar-alert m-auto text-primary"></i>
+                      {% elif 'technical_visit_expiring' in parts %}
+                      <i class="mdi mdi-wrench m-auto text-primary"></i>
+                      {% elif 'oil_change_needed' in parts %}
+                      <i class="mdi mdi-oil m-auto text-primary"></i>
+                      {% elif 'reservation_ending' in parts %}
+                      <i class="mdi mdi-car-clock m-auto text-primary"></i>
+                      {% else %}
+                      <i class="mdi mdi-alert m-auto text-primary"></i>
+                      {% endif %}
+                  {% endwith %}
                     </div>
                     <div class="preview-item-content">
                         <h6 class="preview-subject fw-normal text-dark mb-1">{{ notification.message }}</h6>

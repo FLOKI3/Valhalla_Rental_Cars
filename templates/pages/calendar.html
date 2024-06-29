@@ -45,11 +45,13 @@
         }
         .fc-event-title {
             font-size: 14px;
+            
         }
         .fc-daygrid-day-top {
             display: flex;
             justify-content: center;
             align-items: center;
+            
         }
         .fc-today {
             background-color: #cce5ff !important;
@@ -62,8 +64,19 @@
             z-index: 1050;
         }
     </style>
-<div class="main-panel">
-    <div class="content-wrapper">
+    <div class="main-panel">
+        <div class="content-wrapper">
+          <div class="row">
+    
+    
+    
+            
+    
+    
+    
+            <div class="col-12 grid-margin">
+                <div class="card">
+                <div class="card-body">
         <h1 class="text-center">Reservation Calendar</h1>
         <div id='calendar'></div>
     </div>
@@ -114,7 +127,6 @@
             calendar.render();
         });
     </script>
-</div>
 </div>
 </div>
     {% endblock %}
